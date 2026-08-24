@@ -1,69 +1,78 @@
-# Prerequisites
-*.d
+# ===================
+# Visual Studio 生成的文件
+# ===================
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+*.userosscache
+*.vspscc
+*.vssscc
+*.sln.docstates
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
+.vs/
+.vscode/
+
+# ===================
+# 编译输出（Premake 构建产物）
+# ===================
+bin/
+bin-int/
+build/
+
+# ===================
+# 编译中间文件
+# ===================
 *.obj
-
-# Precompiled Headers
-*.gch
+*.o
 *.pch
-
-# Linker files
-*.ilk
-
-# Debugger Files
 *.pdb
+*.ilk
+*.exp
+*.lib
+*.log
+*.tlog
 
-# Compiled Dynamic libraries
+# ===================
+# 最终可执行文件
+# ===================
+*.exe
+*.exe.manifest
+*.dll
 *.so
 *.dylib
-*.dll
-*.so.*
-
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
 *.app
 
-# Build directories
-build/
-Build/
-build-*/
+# ===================
+# 工具（提交 premake 本身）
+# ===================
+!tools/premake5.exe
 
-# CMake generated files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-install_manifest.txt
-compile_commands.json
+# ===================
+# 编辑器/IDE 配置
+# ===================
+.idea/
+*.swp
+*.swo
+*~
 
-# Temporary files
+# ===================
+# 操作系统生成的文件
+# ===================
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# ===================
+# 其他临时文件
+# ===================
 *.tmp
 *.log
-*.bak
-*.swp
-
-# vcpkg
-vcpkg_installed/
-
-# debug information files
-*.dwo
-
-# test output & cache
-Testing/
-.cache/
+*.cache
+*.pdb
+*.idb
+*.dep
+*.manifest
+*.rc
