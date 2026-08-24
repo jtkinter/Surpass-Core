@@ -12,16 +12,24 @@ GLFW | 3.5.1
 GLAD | Core Profile 4.6
 
 ### 项目结构
+```
 surpass
 -> lib          // 存放第三方库
----> glfw
 ---> glad
+---> glfw
 -> res          // 资产
 ---> shader
 -> src          // 源代码
+---> core
+---> rederer
+---> utils
+```
 
 ### 下一步
-完成工程化，引入纹理
+- 引入纹理
+- 解决Mesh中的硬编码
+- 引入premake管理项目
+- 实现预编译
 
 ## 开发日志
 2026.8.22 
@@ -32,3 +40,6 @@ surpass
 完成函数封装
 引入uniform
 将glsl源代码整理成文件并让文件识别出来
+
+2026.8.24
+实现Utils类、Shader类、Mesh类和Window类封装
