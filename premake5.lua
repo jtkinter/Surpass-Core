@@ -11,16 +11,21 @@ project "Surpass-Core"
 	objdir "bin-int/%{cfg.buildcfg}"
 	debugdir "%{prj.location}"
 
+	pchheader "sppch.h"
+	pchsource "src/sppch.cpp"
+
 	files {
 		"src/**.h",
 		"src/**.cpp",
-		"lib/glad/src/glad.c"
+		"lib/glad/src/glad.c",
+		"src/sppch.cpp"
 	}
 
 	includedirs {
 		"src",
 		"lib/glfw/include",
-		"lib/glad/include"
+		"lib/glad/include",
+		"lib/stb/"
 	}
 
 	libdirs {

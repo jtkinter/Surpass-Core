@@ -2,10 +2,12 @@
 
 #include <vector>
 
+struct Vertex2D;
+
 class Mesh 
 {
 public:
-	Mesh(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+	Mesh(const std::vector<Vertex2D>& vertices, const std::vector<unsigned int>& indices);
 	~Mesh();
 
 	// ½ûÖ¹¿½±´

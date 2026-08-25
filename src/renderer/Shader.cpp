@@ -1,7 +1,6 @@
 #include "Shader.h"
 #include "utils/Utils.h"
-#include <iostream>
-#include <glad/glad.h>
+#include "sppch.h"
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 {
@@ -51,6 +50,11 @@ void Shader::use() const
 void Shader::setUniform1f(const std::string& name, float value) const
 {
 	glUniform1f(getUniformLocation(name), value);
+}
+
+void Shader::setUniform1i(const std::string& name, int value) const
+{
+	glUniform1i(getUniformLocation(name), value);
 }
 
 // 创造并编译着色器

@@ -1,8 +1,6 @@
 #include "Window.h"
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-#include <iostream>
+#include "sppch.h"
 
 Window::Window(int width, int height, const std::string& title)
 {
