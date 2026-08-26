@@ -1,6 +1,6 @@
-#include "Window.h"
-
 #include "sppch.h"
+#include "Window.h"
+#include "core/EventDispatcher.h"
 
 Window::Window(int width, int height, const std::string& title)
 {
@@ -29,6 +29,17 @@ Window::Window(int width, int height, const std::string& title)
 		glfwTerminate();
 		std::exit(-1);
 	}
+
+	glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		KeyState state;
+		if (action == GLFW_PRESS) state = KeyState::Pressed;
+		else if (action == GLFW_RELEASE) state = KeyState::Released;
+		else state = KeyState::Repeat;
+
+		KeyEvent event(key, state);
+		EventDispatcher::get().dispatch(event);
+	});
 }
 
 Window::~Window()

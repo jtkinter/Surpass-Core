@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glad/glad.h>
-
 struct Vertex2D
 {
 	float x, y;	// Î»ÖÃ×ø±ê

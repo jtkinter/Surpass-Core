@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 struct Vertex2D;
 
 class Mesh 

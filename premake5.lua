@@ -17,9 +17,13 @@ project "Surpass-Core"
 	files {
 		"src/**.h",
 		"src/**.cpp",
-		"lib/glad/src/glad.c",
-		"src/sppch.cpp"
+		"lib/glad/src/glad.c"
 	}
+
+	filter { "files:lib/glad/src/glad.c" }
+		flags { "NoPCH" }
+		compileas "C"
+	filter {}
 
 	includedirs {
 		"src",

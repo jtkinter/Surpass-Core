@@ -1,3 +1,4 @@
+#include "sppch.h"
 #include "Mesh.h"
 
 #include "Vertex.h"

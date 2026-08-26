@@ -1,6 +1,6 @@
+#include "sppch.h"
 #include "utils.h"
 #include <fstream>
-#include <iostream>
 #include <sstream>
 
 // 读取glsl源文件

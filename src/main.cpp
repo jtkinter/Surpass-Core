@@ -5,11 +5,19 @@
 #include "core/Window.h"
 #include "renderer/Texture.h"
 #include "renderer/Vertex.h"
+#include "core/EventDispatcher.h"
 
 
 int main()
 {
 	Window window(800, 600, "Surpass Engine");
+
+	EventDispatcher::get().subscribe(EventType::KeyEvent, [](const Event& e)
+		{
+			const KeyEvent ks = static_cast<const KeyEvent&>(e);
+			if (ks.state == KeyState::Pressed && ks.KeyCode == GLFW_KEY_R)
+				std::cout << "按下了R键" << std::endl;
+		});
 
 	// 设置顶点
 	std::vector<Vertex2D> vertices = {

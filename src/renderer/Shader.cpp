@@ -1,6 +1,6 @@
+#include "sppch.h"
 #include "Shader.h"
 #include "utils/Utils.h"
-#include "sppch.h"
 
 Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 {
