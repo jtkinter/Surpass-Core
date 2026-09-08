@@ -6,7 +6,7 @@ Window::Window(int width, int height, const std::string& title)
 {
 	if (!glfwInit())
 	{
-		std::cerr << "GLFW 初始化失败" << std::endl;
+		Log::error("GLFW 初始化失败");
 		std::exit(-1);
 	}
 
@@ -17,7 +17,7 @@ Window::Window(int width, int height, const std::string& title)
 	m_Window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (!m_Window)
 	{
-		std::cerr << "窗口创建失败" << std::endl;
+		Log::error("窗口创建失败");
 		glfwTerminate();
 		std::exit(-1);
 	}
@@ -25,21 +25,13 @@ Window::Window(int width, int height, const std::string& title)
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		std::cerr << "GLAD 初始化失败" << std::endl;
+		Log::error("GLAD 初始化失败");
 		glfwTerminate();
 		std::exit(-1);
 	}
 
-	glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-	{
-		KeyState state;
-		if (action == GLFW_PRESS) state = KeyState::Pressed;
-		else if (action == GLFW_RELEASE) state = KeyState::Released;
-		else state = KeyState::Repeat;
-
-		KeyEvent event(key, state);
-		EventDispatcher::get().dispatch(event);
-	});
+	// 注册回调函数
+	registerCallback();
 }
 
 Window::~Window()
@@ -61,4 +53,24 @@ void Window::swapBuffers() const
 void Window::pollEvents () const
 {
 	glfwPollEvents();
+}
+
+void Window::registerCallback()
+{
+	glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			KeyState state;
+			if (action == GLFW_PRESS) state = KeyState::Pressed;
+			else if (action == GLFW_RELEASE) state = KeyState::Released;
+			else state = KeyState::Repeat;
+
+			KeyEvent event(key, state);
+			EventDispatcher::get().dispatch(event);
+		});
+
+	glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
+		{
+			ScrollEvent event(x, y);
+			EventDispatcher::get().dispatch(event);
+		});
 }

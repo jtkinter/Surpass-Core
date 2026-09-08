@@ -26,7 +26,7 @@ Surpass-Core    // 项目根目录
 ---> shader
 -> src          // 源代码
 ---> core
----> rederer
+---> renderer
 ---> utils
 -> tools        // 环境构建文件
 ```
@@ -62,6 +62,10 @@ Surpass-Core    // 项目根目录
 2026.8.26
 简单实现按键获取，并封装事件和事件派发器类
 修复预编译bug和删掉对应include
+
+2026.9.8
+完成了log类封装
+修复了突然出现的按键释放刷屏bug
 
 
 ## 许可证

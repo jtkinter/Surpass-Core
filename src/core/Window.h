@@ -13,5 +13,7 @@ public:
 	void pollEvents() const;
 
 private:
+	void registerCallback();
+
 	GLFWwindow* m_Window;
 };

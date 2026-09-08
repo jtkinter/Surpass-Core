@@ -28,8 +28,8 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
 	if (!success)
 	{
-		glGetShaderInfoLog(m_ID, 512, NULL, infoLog);
-		std::cerr << "着色器程序链接失败: " << infoLog << std::endl;
+		glGetProgramInfoLog(m_ID, 512, NULL, infoLog);
+		Log::error("着色器程序链接失败: ", infoLog);
 	}
 
 	// 清理着色器对象
@@ -70,7 +70,7 @@ unsigned int Shader::compileShader(unsigned int type, const char* source)
 	if (!success)
 	{
 		glGetShaderInfoLog(shader, 512, nullptr, infoLog);
-		std::cerr << (type == GL_VERTEX_SHADER ? "顶点" : "片段") << "着色器编译失败: " << infoLog << std::endl;
+		Log::error((type == GL_VERTEX_SHADER ? "顶点" : "片段"), "着色器编译失败: " , infoLog);
 	}
 	return shader;
 }
@@ -90,7 +90,7 @@ int Shader::getUniformLocation(const std::string& name) const
 	}
 
 	if (location == -1)
-		std::cerr << "警告：Uniform '" << name << "' 在着色器中未找到" << std::endl;
+		Log::warn( "Uniform '", name , "' 在着色器中未找到");
 
 	return location;
 }

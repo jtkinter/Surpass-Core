@@ -2,6 +2,7 @@
 
 enum KeyState
 {
+	None,
 	Pressed,
 	Released,
 	Repeat
@@ -9,7 +10,8 @@ enum KeyState
 
 enum class EventType
 {
-	KeyEvent
+	KeyEvent,
+	ScrollEvent
 };
 
 struct Event
@@ -24,6 +26,17 @@ struct KeyEvent : public Event
 
 	KeyEvent(int code, KeyState ks)
 		: Event{EventType::KeyEvent}, KeyCode(code), state(ks)
+	{
+	}
+};
+
+struct ScrollEvent : public Event
+{
+	double xOffset;
+	double yOffset;
+
+	ScrollEvent(double x, double y)
+		: Event{ EventType::ScrollEvent }, xOffset(x), yOffset(y)
 	{
 	}
 };
