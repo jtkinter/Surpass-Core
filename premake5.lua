@@ -29,7 +29,8 @@ project "Surpass-Core"
 		"src",
 		"lib/glfw/include",
 		"lib/glad/include",
-		"lib/stb/"
+		"lib/stb/",
+		"lib/glm"
 	}
 
 	libdirs {

@@ -5,12 +5,16 @@
 #include "renderer/Vertex.h"
 #include "renderer/Mesh.h"
 #include "renderer/Texture.h"
-#include "core/Log.h"
+#include "core/Time.h"
+#include "core/Camera.h"
 
 
 int main()
 {
 	Window window(800, 600, "Surpass Engine");
+
+	Camera camera(45.0f, 800.0f / 600.0f);
+	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 
 	// 设置顶点
 	std::vector<Vertex2D> vertices = {
@@ -40,18 +44,24 @@ int main()
 		Input::get().update();
 		window.pollEvents();
 
-		if (Input::get().isKeyJustPressed(GLFW_KEY_R))
-			Log::info("[按下瞬间]按下了R键");
-		if (Input::get().isKeyJustReleased(GLFW_KEY_R))
-			Log::info("[释放瞬间]释放了R键");
-		if (Input::get().isKeyPressed(GLFW_KEY_R))
-			Log::info("[持续按住]按下了R键");
+		Time::update();
+		
+		float speed = 3.0f * Time::getDeltaTime();
+
+		// WASD移动 目前ws是放大缩小
+		if (Input::get().isKeyPressed(GLFW_KEY_W)) camera.move(camera.getForward() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_S)) camera.move(-camera.getForward() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_A)) camera.move(-camera.getRight() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_D)) camera.move(camera.getRight() * speed);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// 绘制图像
 		shader.use();
+		shader.setUniformMat4("uView", camera.getViewMatrix());
+		shader.setUniformMat4("uProjection", camera.getProjectionMatrix());
+
 		texture.bind(0);
 		shader.setUniform1i("uTexture", 0);
 		mesh.draw();

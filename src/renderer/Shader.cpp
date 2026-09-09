@@ -57,6 +57,11 @@ void Shader::setUniform1i(const std::string& name, int value) const
 	glUniform1i(getUniformLocation(name), value);
 }
 
+void Shader::setUniformMat4(const std::string& name, const glm::mat4 matrix) const
+{
+	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
+}
+
 // 创造并编译着色器
 unsigned int Shader::compileShader(unsigned int type, const char* source)
 {

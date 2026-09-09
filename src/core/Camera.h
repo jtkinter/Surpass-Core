@@ -1,0 +1,41 @@
+#pragma once
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+class Camera
+{
+public:
+	Camera(float fov = 45.0f, float aspectRadio = 16.0f / 9.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
+
+	glm::vec3 getForward() const;
+	glm::vec3 getRight() const;
+	glm::mat4 getViewMatrix() const { return m_ViewMatrix; }
+	glm::mat4 getProjectionMatrix() const { return m_ProjectMatrix; }
+
+	void setPosition(const glm::vec3& position)
+	{
+		m_Position = position;
+		updateViewMatrix();
+	}
+
+	void move(const glm::vec3& offset)
+	{
+		m_Position += offset;
+		updateViewMatrix();
+	}
+
+private:
+	void updateProjectMatrix();
+	void updateViewMatrix();
+
+	float m_Fov;			// ÊÓ³¡½Ç
+	float m_AspectRadio;	// ¿í¸ß±È
+	float m_NearPlane;		// ½ü²ÃÇÐÃæ
+	float m_FarPlane;		// Ô¶²ÃÇÐÃæ
+	float m_Yaw = -90.0f;	// Æ«º½½Ç
+	float m_Pitch = 0.0f;	// ¸©Ñö½Ç
+
+	glm::mat4 m_ProjectMatrix{ 1.0f };	// Í¶Ó°¾ØÕó
+	glm::mat4 m_ViewMatrix{ 1.0f };		// ÊÓÍ¼¾ØÕó
+	glm::vec3 m_Position{ 0.0f, 0.0f, 0.0f };
+};

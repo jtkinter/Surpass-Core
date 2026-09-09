@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 class Shader 
 {
 public:
@@ -9,6 +11,7 @@ public:
 	void use() const;
 	void setUniform1f(const std::string& name, float value) const;
 	void setUniform1i(const std::string& name, int value) const;
+	void setUniformMat4(const std::string& name, const glm::mat4 matrix) const;
 
 private:
 	unsigned int compileShader(unsigned int type, const char* source);
