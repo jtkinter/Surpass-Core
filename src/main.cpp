@@ -56,6 +56,12 @@ int main()
 		if (Input::get().isKeyPressed(GLFW_KEY_D)) camera.move(camera.getRight() * speed);
 		if (Input::get().isKeyPressed(GLFW_KEY_Q)) camera.rotate(0.0f, -rotSpeed);
 		if (Input::get().isKeyPressed(GLFW_KEY_E)) camera.rotate(0.0f, rotSpeed);
+		if (Input::get().isKeyPressed(GLFW_MOUSE_BUTTON_RIGHT))
+		{
+			auto& mouseDelta = Input::get().getMouseDelta();
+			float mouseSpeed = 0.15f;
+			camera.rotate(-mouseDelta.y * mouseSpeed, mouseDelta.x * mouseSpeed);
+		}
 
 		float scroll = Input::get().getScrollOffset();
 		if (scroll != 0.0f)

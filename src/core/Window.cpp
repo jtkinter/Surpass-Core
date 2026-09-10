@@ -58,19 +58,36 @@ void Window::pollEvents () const
 void Window::registerCallback()
 {
 	glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-		{
-			KeyState state;
-			if (action == GLFW_PRESS) state = KeyState::Pressed;
-			else if (action == GLFW_RELEASE) state = KeyState::Released;
-			else state = KeyState::Repeat;
+	{
+		ButtonState state;
+		if (action == GLFW_PRESS) state = ButtonState::Pressed;
+		else if (action == GLFW_RELEASE) state = ButtonState::Released;
+		else state = ButtonState::Repeat;
 
-			KeyEvent event(key, state);
-			EventDispatcher::get().dispatch(event);
-		});
+		KeyEvent event(key, state);
+		EventDispatcher::get().dispatch(event);
+	});
 
 	glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double x, double y)
-		{
-			ScrollEvent event(x, y);
-			EventDispatcher::get().dispatch(event);
-		});
+	{
+		ScrollEvent event(x, y);
+		EventDispatcher::get().dispatch(event);
+	});
+
+	glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double x, double y)
+	{
+		MouseMoveEvent event(x, y);
+		EventDispatcher::get().dispatch(event);
+	});
+
+	glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int key, int action, int mods)
+	{
+		ButtonState state;
+		if (action == GLFW_PRESS) state = ButtonState::Pressed;
+		else if (action == GLFW_RELEASE) state = ButtonState::Released;
+		else state = ButtonState::Repeat;
+
+		MouseKeyEvent event(key, state);
+		EventDispatcher::get().dispatch(event);
+	});
 }

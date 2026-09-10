@@ -43,9 +43,9 @@ void Camera::setRotation(float pitch, float yaw)
 	updateViewMatrix();
 }
 
-void Camera::setAspectRatio(float aspactRatio)
+void Camera::setAspectRatio(float aspectRatio)
 {
-	m_AspectRatio;
+	m_AspectRatio = aspectRatio;
 	updateProjectMatrix();
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-enum KeyState
+enum ButtonState
 {
 	None,
 	Pressed,
@@ -11,7 +11,9 @@ enum KeyState
 enum class EventType
 {
 	KeyEvent,
-	ScrollEvent
+	ScrollEvent,
+	MouseMoveEvent,
+	MouseKeyEvent
 };
 
 struct Event
@@ -21,11 +23,11 @@ struct Event
 
 struct KeyEvent : public Event
 {
-	int KeyCode;
-	KeyState state;
+	int keyCode;
+	ButtonState state;
 
-	KeyEvent(int code, KeyState ks)
-		: Event{EventType::KeyEvent}, KeyCode(code), state(ks)
+	KeyEvent(int code, ButtonState ks)
+		: Event{EventType::KeyEvent}, keyCode(code), state(ks)
 	{
 	}
 };
@@ -37,6 +39,28 @@ struct ScrollEvent : public Event
 
 	ScrollEvent(double x, double y)
 		: Event{ EventType::ScrollEvent }, xOffset(x), yOffset(y)
+	{
+	}
+};
+
+struct MouseMoveEvent : public Event
+{
+	double xPos;
+	double yPos;
+
+	MouseMoveEvent(double x, double y)
+		: Event{ EventType::MouseMoveEvent }, xPos(x), yPos(y)
+	{
+	}
+};
+
+struct MouseKeyEvent : public Event
+{
+	int keyCode;
+	ButtonState state;
+
+	MouseKeyEvent(int code, ButtonState ks)
+		: Event{ EventType::MouseKeyEvent }, keyCode(code), state(ks)
 	{
 	}
 };

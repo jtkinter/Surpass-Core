@@ -11,5 +11,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+// 数学库
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 // 十分常用的自建库
 #include "core/Log.h"
