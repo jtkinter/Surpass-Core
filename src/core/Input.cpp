@@ -55,5 +55,6 @@ void Input::onKeyEvent(const KeyEvent& e)
 
 void Input::onScrollEvent(const ScrollEvent& e)
 {
-	Log::info("滚轮水平移动：", e.xOffset, "，竖直移动：", e.yOffset);
+	//Log::info("滚轮水平移动：", e.xOffset, "，竖直移动：", e.yOffset);
+	m_ScrollOffset += e.yOffset;
 }

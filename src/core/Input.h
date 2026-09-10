@@ -24,12 +24,16 @@ public:
 
 	bool isKeyPressed(int KeyCode) const;
 	bool isKeyJustPressed(int KeyCode) const;
-	bool isKeyReleased(int keyCode) const;
 	bool isKeyJustReleased(int keyCode) const;
+
+	float getScrollOffset() const { return m_ScrollOffset; }
+	void resetScrollOffset() { m_ScrollOffset = 0.0f; }
 
 private:
 	void onKeyEvent(const KeyEvent& e);
 	void onScrollEvent(const ScrollEvent& e);
 
 	std::unordered_map<int, KeyData> m_KeyStates;
+
+	float m_ScrollOffset = 0.0f;
 };

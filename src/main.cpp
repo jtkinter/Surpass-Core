@@ -47,12 +47,22 @@ int main()
 		Time::update();
 		
 		float speed = 3.0f * Time::getDeltaTime();
+		float rotSpeed = 50.0f * Time::getDeltaTime();
 
 		// WASD移动 目前ws是放大缩小
-		if (Input::get().isKeyPressed(GLFW_KEY_W)) camera.move(camera.getForward() * speed);
-		if (Input::get().isKeyPressed(GLFW_KEY_S)) camera.move(-camera.getForward() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_W)) camera.move(camera.getUp() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_S)) camera.move(-camera.getUp() * speed);
 		if (Input::get().isKeyPressed(GLFW_KEY_A)) camera.move(-camera.getRight() * speed);
 		if (Input::get().isKeyPressed(GLFW_KEY_D)) camera.move(camera.getRight() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_Q)) camera.rotate(0.0f, -rotSpeed);
+		if (Input::get().isKeyPressed(GLFW_KEY_E)) camera.rotate(0.0f, rotSpeed);
+
+		float scroll = Input::get().getScrollOffset();
+		if (scroll != 0.0f)
+		{
+			camera.move(camera.getForward() * scroll * 0.25f);
+			Input::get().resetScrollOffset();
+		}
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
