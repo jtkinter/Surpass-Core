@@ -12,8 +12,13 @@ public:
 	void swapBuffers() const;
 	void pollEvents() const;
 
+	float getAspectRatio() const { return (float)m_Width / m_Height; }
+
 private:
 	void registerCallback();
 
 	GLFWwindow* m_Window;
+
+	int m_Width;
+	int m_Height;
 };

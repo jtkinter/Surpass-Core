@@ -3,6 +3,7 @@
 #include "core/EventDispatcher.h"
 
 Window::Window(int width, int height, const std::string& title)
+	: m_Width(width), m_Height(height)
 {
 	if (!glfwInit())
 	{
@@ -14,7 +15,7 @@ Window::Window(int width, int height, const std::string& title)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	m_Window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+	m_Window = glfwCreateWindow(m_Width, m_Height, title.c_str(), NULL, NULL);
 	if (!m_Window)
 	{
 		Log::error("´°¿Ú´´½¨Ê§°Ü");

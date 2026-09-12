@@ -7,21 +7,22 @@
 #include "renderer/Texture.h"
 #include "core/Time.h"
 #include "core/Camera.h"
+#include "renderer/Renderer.h"
 
 
 int main()
 {
 	Window window(800, 600, "Surpass Engine");
 
-	Camera camera(45.0f, 800.0f / 600.0f);
+	Camera camera(45.0f, window.getAspectRatio());
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 
 	// 设置顶点
 	std::vector<Vertex2D> vertices = {
-		{ -0.25f, -0.5f, 0.0f, 0.0f },
-		{  0.25f, -0.5f, 1.0f, 0.0f },
-		{  0.25f,  0.5f, 1.0f, 1.0f },
-		{ -0.25f,  0.5f, 0.0f, 1.0f }
+		{ {-0.25f, -0.5f}, { 0.0f, 0.0f} },
+		{ { 0.25f, -0.5f}, { 1.0f, 0.0f} },
+		{ { 0.25f,  0.5f}, { 1.0f, 1.0f} },
+		{ {-0.25f,  0.5f}, { 0.0f, 1.0f} }
 	};
 
 	// 设置渲染索引
@@ -34,9 +35,7 @@ int main()
 	Texture texture("res/textures/logov0_1.png");
 	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
 
-	// 解决透明区域没有加载问题
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	Renderer::init();
 
 	// 循环
 	while (!window.shouldClose())
@@ -70,17 +69,15 @@ int main()
 			Input::get().resetScrollOffset();
 		}
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
 		// 绘制图像
+		Renderer::beginFrame(camera);
+		
 		shader.use();
-		shader.setUniformMat4("uView", camera.getViewMatrix());
-		shader.setUniformMat4("uProjection", camera.getProjectionMatrix());
-
 		texture.bind(0);
 		shader.setUniform1i("uTexture", 0);
-		mesh.draw();
+		
+		Renderer::draw(shader, mesh);
+		Renderer::endFrame();
 
 		window.swapBuffers();
 	}
