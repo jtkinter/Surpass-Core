@@ -1,11 +1,11 @@
 #pragma once
 
-struct Vertex2D;
+struct Vertex;
 
 class Mesh 
 {
 public:
-	Mesh(const std::vector<Vertex2D>& vertices, const std::vector<unsigned int>& indices);
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 	~Mesh();
 
 	// ½ûÖ¹¿½±´

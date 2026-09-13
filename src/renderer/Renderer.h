@@ -12,7 +12,7 @@ public:
 	static void beginFrame(const Camera& camera);
 	static void endFrame();
 
-	static void draw(const Shader& shader, const Mesh& mesh);
+	static void draw(const Shader& shader, const Mesh& mesh, const glm::mat4& model = glm::mat4(1.0f));
 
 private:
 	static glm::mat4 m_ViewMatrix;
