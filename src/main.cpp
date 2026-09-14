@@ -8,6 +8,7 @@
 #include "core/Time.h"
 #include "core/Camera.h"
 #include "renderer/Renderer.h"
+#include "renderer/ObjLoader.h"
 
 
 int main()
@@ -60,8 +61,9 @@ int main()
 		20,21,22,22,23,20
 	};
 
-	Mesh mesh(vertices, indices);
-	Texture texture("res/textures/logov0_1.png");
+	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
+	Mesh mesh(meshData.vertices, meshData.indices);
+	Texture texture("res/textures/logo.png");
 	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
 
 	Renderer::init();
@@ -101,9 +103,9 @@ int main()
 		// »æÖÆÍ¼Ïñ
 		Renderer::beginFrame(camera);
 		
-		shader.use();
-		texture.bind(0);
-		shader.setUniform1i("uTexture", 0);
+		//shader.use();
+		//texture.bind(0);
+		//shader.setUniform1i("uTexture", 0);
 		
 		float time = Time::getTotalTime();
 		glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
