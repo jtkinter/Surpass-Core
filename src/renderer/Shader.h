@@ -8,6 +8,7 @@ public:
 
 	void use() const;
 	void setUniform1f(const std::string& name, float value) const;
+	void setUniform3f(const std::string& name, float v0, float v1, float v2) const;
 	void setUniform1i(const std::string& name, int value) const;
 	void setUniformMat4(const std::string& name, const glm::mat4 matrix) const;
 

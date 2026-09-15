@@ -9,6 +9,7 @@
 #include "core/Camera.h"
 #include "renderer/Renderer.h"
 #include "renderer/ObjLoader.h"
+#include "renderer/Light.h"
 
 
 int main()
@@ -19,37 +20,37 @@ int main()
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 
 	// …Ë÷√∂•µ„
-	std::vector<Vertex> vertices = {
-		{ {-1.0f,-1.0f, 1.0f}, { 0.0f, 0.0f} },
-		{ { 1.0f,-1.0f, 1.0f}, { 1.0f, 0.0f} },
-		{ { 1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f} },
-		{ {-1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f} },
+	//std::vector<Vertex> vertices = {
+	//	{ {-1.0f,-1.0f, 1.0f}, { 0.0f, 0.0f} },
+	//	{ { 1.0f,-1.0f, 1.0f}, { 1.0f, 0.0f} },
+	//	{ { 1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f} },
+	//	{ {-1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f} },
 
-		{ {-1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
-		{ { 1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
-		{ { 1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
-		{ {-1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
+	//	{ {-1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
+	//	{ { 1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
+	//	{ { 1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
+	//	{ {-1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
 
-		{ {-1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
-		{ {-1.0f,-1.0f, 1.0f}, { 1.0f, 0.0f} },
-		{ {-1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f} },
-		{ {-1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
+	//	{ {-1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
+	//	{ {-1.0f,-1.0f, 1.0f}, { 1.0f, 0.0f} },
+	//	{ {-1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f} },
+	//	{ {-1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
 
-		{ { 1.0f,-1.0f, 1.0f}, { 0.0f, 0.0f} },
-		{ { 1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
-		{ { 1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
-		{ { 1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f} },
+	//	{ { 1.0f,-1.0f, 1.0f}, { 0.0f, 0.0f} },
+	//	{ { 1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
+	//	{ { 1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
+	//	{ { 1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f} },
 
-		{ {-1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
-		{ { 1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
-		{ { 1.0f,-1.0f, 1.0f}, { 1.0f, 1.0f} },
-		{ {-1.0f,-1.0f, 1.0f}, { 0.0f, 1.0f} },
+	//	{ {-1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
+	//	{ { 1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
+	//	{ { 1.0f,-1.0f, 1.0f}, { 1.0f, 1.0f} },
+	//	{ {-1.0f,-1.0f, 1.0f}, { 0.0f, 1.0f} },
 
-		{ {-1.0f, 1.0f, 1.0f}, { 0.0f, 0.0f} },
-		{ { 1.0f, 1.0f, 1.0f}, { 1.0f, 0.0f} },
-		{ { 1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
-		{ {-1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
-	};
+	//	{ {-1.0f, 1.0f, 1.0f}, { 0.0f, 0.0f} },
+	//	{ { 1.0f, 1.0f, 1.0f}, { 1.0f, 0.0f} },
+	//	{ { 1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
+	//	{ {-1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
+	//};
 
 	// …Ë÷√‰÷»æÀ˜“˝
 	std::vector<unsigned int> indices = {
@@ -65,6 +66,7 @@ int main()
 	Mesh mesh(meshData.vertices, meshData.indices);
 	Texture texture("res/textures/logo.png");
 	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
+	Light light;
 
 	Renderer::init();
 
@@ -103,13 +105,23 @@ int main()
 		// ªÊ÷∆ÕºœÒ
 		Renderer::beginFrame(camera);
 		
-		//shader.use();
+		shader.use();
 		//texture.bind(0);
 		//shader.setUniform1i("uTexture", 0);
 		
-		float time = Time::getTotalTime();
-		glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
-		Renderer::draw(shader, mesh, model);
+		light.apply(shader);
+		shader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+		
+		//float time = Time::getTotalTime();
+		//glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
+		const int count = 3;
+		const float spacing = 0.5;
+		float offset = (count - 1) * spacing;
+		for (int i = 0; i < count; ++i)
+		{
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(offset + i * spacing, 0.0f, 0.0f));
+			Renderer::draw(shader, mesh, model);
+		}
 		Renderer::endFrame();
 
 		window.swapBuffers();
