@@ -13,7 +13,24 @@ Texture::Texture(const std::string& filepath)
 		std::cerr << "ÎÆÀí¼ÓÔØÊ§°Ü" << std::endl;
 		return;
 	}
+	setup(m_Width, m_Height, data);
+	stbi_image_free(data);
+}
 
+Texture::Texture(int width, int height, const unsigned char* data)
+	: m_Width(width), m_Height(height)
+{
+	m_BPP = 4;
+	setup(width, height, data);
+}
+
+Texture::~Texture()
+{
+	glDeleteTextures(1, &m_RendererID);
+}
+
+void Texture::setup(int width, int height, const unsigned char* data)
+{
 	glGenTextures(1, &m_RendererID);
 	glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
@@ -27,12 +44,6 @@ Texture::Texture(const std::string& filepath)
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	stbi_image_free(data);
-}
-
-Texture::~Texture()
-{
-	glDeleteTextures(1, &m_RendererID);
 }
 
 void Texture::bind(unsigned int unit) const

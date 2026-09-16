@@ -10,6 +10,7 @@
 #include "renderer/Renderer.h"
 #include "renderer/ObjLoader.h"
 #include "renderer/Light.h"
+#include "utils/TextureGenerator.h"
 
 
 int main()
@@ -62,9 +63,11 @@ int main()
 		20,21,22,22,23,20
 	};
 
-	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
+	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cupa(lp).obj");
 	Mesh mesh(meshData.vertices, meshData.indices);
-	Texture texture("res/textures/logo.png");
+	//Texture texture("res/textures/logo.png");
+	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 64);
+	Texture texture(512, 512, data.data());
 	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
 	Light light;
 
@@ -106,8 +109,8 @@ int main()
 		Renderer::beginFrame(camera);
 		
 		shader.use();
-		//texture.bind(0);
-		//shader.setUniform1i("uTexture", 0);
+		texture.bind(0);
+		shader.setUniform1i("uTexture", 0);
 		
 		light.apply(shader);
 		shader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);

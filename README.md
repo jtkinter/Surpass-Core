@@ -30,6 +30,8 @@ Surpass-Core    // 项目根目录
 ---> stb
 -> res          // 资产
 ---> models     // .obj文件
+cup.obj为外壁uv正常，但内壁uv过于集中 推荐使用
+cupa.obj从Blender重新展开uv，没有解决上述问题，反而uv全歪了
 ---> shader     // 渲染器
 ---> textures   // 纹理文件
 -> src          // 源代码
@@ -102,6 +104,9 @@ Surpass-Core    // 项目根目录
 2026.9.15
 导入.obj法线数据，完善.obj文件导入
 实现光照Light类
+
+2026.9.16
+完成3D uv测试
 
 
 ## 许可证

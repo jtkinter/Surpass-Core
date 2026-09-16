@@ -13,8 +13,7 @@ uniform vec3 uViewPos;		// œ‡ª˙Œª÷√
 
 void main()
 {
-//	vec4 texColor = texture(uTexture, v_TexCoord);
-	vec4 texColor = vec4(0.8, 0.6, 0.4, 1.0);
+	vec4 texColor = texture(uTexture, v_TexCoord);
 
 	vec3 norm = normalize(v_Normal);
 	vec3 lightDir = normalize(uLightPos - v_FragPos);
