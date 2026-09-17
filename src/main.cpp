@@ -11,6 +11,7 @@
 #include "renderer/ObjLoader.h"
 #include "renderer/Light.h"
 #include "utils/TextureGenerator.h"
+#include "renderer/Model.h"
 
 
 int main()
@@ -63,13 +64,27 @@ int main()
 		20,21,22,22,23,20
 	};
 
-	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cupa(lp).obj");
+	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
 	Mesh mesh(meshData.vertices, meshData.indices);
+
 	//Texture texture("res/textures/logo.png");
-	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 64);
+
+	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
 	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
 	Light light;
+
+	const int count = 3;
+	const float spacing = 0.5;
+	float offset = (count - 1) * spacing;
+	std::vector<Model> models;
+	models.reserve(count);
+	for (int i = 0; i < count; ++i)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(offset + i * spacing, 0.0f, 0.0f));
+		Model model(mesh, transform);
+		models.push_back(model);
+	}
 
 	Renderer::init();
 
@@ -117,14 +132,8 @@ int main()
 		
 		//float time = Time::getTotalTime();
 		//glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
-		const int count = 3;
-		const float spacing = 0.5;
-		float offset = (count - 1) * spacing;
-		for (int i = 0; i < count; ++i)
-		{
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(offset + i * spacing, 0.0f, 0.0f));
-			Renderer::draw(shader, mesh, model);
-		}
+		for (auto& m : models)
+			m.draw(shader);
 		Renderer::endFrame();
 
 		window.swapBuffers();
