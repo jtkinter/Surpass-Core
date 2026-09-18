@@ -12,8 +12,8 @@
 
 ### 使用的第三方库
 ```
-GLFW | 3.5.1
-GLAD | Core Profile 4.6
+GLFW | 3.5.1            | https://www.glfw.org/download.html
+GLAD | Core Profile 4.6 |
 stb  | 
 glm  | 1.0.3
 ```

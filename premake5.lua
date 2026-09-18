@@ -2,13 +2,25 @@ workspace "Surpass-Core"
 	configurations { "Debug", "Release" }
 	platforms { "x64" }
 	
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.platform}"
+
+IncludeDir = {}
+IncludeDir["GLFW"] = "lib/glfw/include"
+IncludeDir["GLAD"] = "lib/glad/include"
+IncludeDir["STB"] = "lib/stb"
+IncludeDir["GLM"] = "lib/glm"
+
+group "Library"
+	include "lib/glfw"
+	include "lib/glad"
+group ""
 
 project "Surpass-Core"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	targetdir "bin/%{cfg.buildcfg}"
-	objdir "bin-int/%{cfg.buildcfg}"
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 	debugdir "%{prj.location}"
 
 	pchheader "sppch.h"
@@ -16,36 +28,27 @@ project "Surpass-Core"
 
 	files {
 		"src/**.h",
-		"src/**.cpp",
-		"lib/glad/src/glad.c"
+		"src/**.cpp"
 	}
-
-	filter { "files:lib/glad/src/glad.c" }
-		flags { "NoPCH" }
-		compileas "C"
-	filter {}
 
 	includedirs {
 		"src",
-		"lib/glfw/include",
-		"lib/glad/include",
-		"lib/stb/",
-		"lib/glm"
-	}
-
-	libdirs {
-		"lib/glfw/lib"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLAD}",
+		"%{IncludeDir.STB}",
+		"%{IncludeDir.GLM}"
 	}
 
 	links {
-		"glfw3",
+		"GLFW",
+		"GLAD",
 		"opengl32"
 	}
 
 	filter "configurations:Debug"
 		defines { "DEBUG" }
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines { "NDEBUG" }
-		symbols "On"
+		symbols "on"
