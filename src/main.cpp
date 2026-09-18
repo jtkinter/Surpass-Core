@@ -72,7 +72,25 @@ int main()
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
 	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
-	Light light;
+	std::vector<Light> lights;
+	
+	Light keyLight;
+	keyLight.pos = glm::vec3(5.0f, 5.0f, 5.0f);
+	keyLight.color = glm::vec3(1.0f, 1.0f, 1.0f);
+	keyLight.intensity = 1.0f;
+	lights.push_back(keyLight);
+
+	Light fillLight;
+	fillLight.pos = glm::vec3(-5.0f, 3.0f, 2.0f);
+	fillLight.color = glm::vec3(0.3f, 0.4f, 0.5f);
+	fillLight.intensity = 0.8f;
+	lights.push_back(fillLight);
+
+	Light rimLight;
+	rimLight.pos = glm::vec3(0.0f, -3.0f, -5.0f);
+	rimLight.color = glm::vec3(0.3f, 0.4f, 0.5f);
+	rimLight.intensity = 0.6f;
+	lights.push_back(rimLight);
 
 	const int count = 3;
 	const float spacing = 0.5;
@@ -127,13 +145,15 @@ int main()
 		texture.bind(0);
 		shader.setUniform1i("uTexture", 0);
 		
-		light.apply(shader);
+		for (int i = 0; i < lights.size(); ++i)
+			lights[i].apply(shader, i);
 		shader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 		
 		//float time = Time::getTotalTime();
 		//glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
 		for (auto& m : models)
 			m.draw(shader);
+		shader.setUniform1i("uLightCount", lights.size());
 		Renderer::endFrame();
 
 		window.swapBuffers();
