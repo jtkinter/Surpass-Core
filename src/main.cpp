@@ -1,18 +1,7 @@
 #include "sppch.h"
-#include "core/Window.h"
-#include "core/Input.h"
-#include "renderer/Shader.h"
-#include "renderer/Vertex.h"
-#include "renderer/Mesh.h"
-#include "renderer/Texture.h"
-#include "core/Time.h"
-#include "core/Camera.h"
-#include "renderer/Renderer.h"
-#include "renderer/ObjLoader.h"
-#include "renderer/Light.h"
-#include "utils/TextureGenerator.h"
-#include "renderer/Model.h"
+#include "Surpass.h"
 
+using namespace Surpass;
 
 int main()
 {

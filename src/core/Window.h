@@ -1,24 +1,30 @@
 #pragma once
 
-struct GLFWwindow;
+#include <string>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
-class Window 
-{
-public:
-	Window(int width, int height, const std::string& title);
-	~Window();
+namespace Surpass {
 
-	bool shouldClose() const;
-	void swapBuffers() const;
-	void pollEvents() const;
+	class Window
+	{
+	public:
+		Window(int width, int height, const std::string& title);
+		~Window();
 
-	float getAspectRatio() const { return (float)m_Width / m_Height; }
+		bool shouldClose() const;
+		void swapBuffers() const;
+		void pollEvents() const;
 
-private:
-	void registerCallback();
+		float getAspectRatio() const { return (float)m_Width / m_Height; }
 
-	GLFWwindow* m_Window;
+	private:
+		void registerCallback();
 
-	int m_Width;
-	int m_Height;
-};
+		GLFWwindow* m_Window;
+
+		int m_Width;
+		int m_Height;
+	};
+
+}

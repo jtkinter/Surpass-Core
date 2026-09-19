@@ -2,14 +2,18 @@
 
 #include "Vertex.h"
 
-class ObjLoader
-{
-public:
-	struct MeshData
+namespace Surpass {
+
+	class ObjLoader
 	{
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
+	public:
+		struct MeshData
+		{
+			std::vector<Vertex> vertices;
+			std::vector<unsigned int> indices;
+		};
+
+		static MeshData load(const std::string& filepath);
 	};
 
-	static MeshData load(const std::string& filepath);
-};
+}

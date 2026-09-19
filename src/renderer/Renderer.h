@@ -1,20 +1,24 @@
 #pragma once
 
-class Camera;
-class Shader;
-class Mesh;
+namespace Surpass {
 
-class Renderer
-{
-public:
-	static void init();
+	class Camera;
+	class Shader;
+	class Mesh;
 
-	static void beginFrame(const Camera& camera);
-	static void endFrame();
+	class Renderer
+	{
+	public:
+		static void init();
 
-	static void draw(const Shader& shader, const Mesh& mesh, const glm::mat4& model = glm::mat4(1.0f));
+		static void beginFrame(const Camera& camera);
+		static void endFrame();
 
-private:
-	static glm::mat4 m_ViewMatrix;
-	static glm::mat4 m_ProjectMatrix;
-};
+		static void draw(const Shader& shader, const Mesh& mesh, const glm::mat4& model = glm::mat4(1.0f));
+
+	private:
+		static glm::mat4 m_ViewMatrix;
+		static glm::mat4 m_ProjectMatrix;
+	};
+
+}

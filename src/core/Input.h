@@ -1,48 +1,53 @@
 #pragma once
 
 #include "EventDispatcher.h"
+#include <glm/glm.hpp>
 
-struct ButtonData
-{
-	ButtonState currentState{ ButtonState::None };
-	ButtonState previousState{ ButtonState::None };
-};
+namespace Surpass {
 
-class Input
-{
-public:
-	Input();
-	~Input() = default;
-
-	static Input& get()
+	struct ButtonData
 	{
-		static Input instance;
-		return instance;
-	}
+		ButtonState currentState{ ButtonState::None };
+		ButtonState previousState{ ButtonState::None };
+	};
 
-	void update();
+	class Input
+	{
+	public:
+		Input();
+		~Input() = default;
 
-	bool isKeyPressed(int KeyCode) const;
-	bool isKeyJustPressed(int KeyCode) const;
-	bool isKeyJustReleased(int keyCode) const;
+		static Input& get()
+		{
+			static Input instance;
+			return instance;
+		}
 
-	float getScrollOffset() const { return m_ScrollOffset; }
-	void resetScrollOffset() { m_ScrollOffset = 0.0f; }
+		void update();
 
-	glm::vec2 getMouseDelta() const { return m_MouseDelta; }
+		bool isKeyPressed(int KeyCode) const;
+		bool isKeyJustPressed(int KeyCode) const;
+		bool isKeyJustReleased(int keyCode) const;
 
-private:
-	void onKeyEvent(const KeyEvent& e);
-	void onScrollEvent(const ScrollEvent& e);
-	void onMouseMoveEvent(const MouseMoveEvent& e);
-	void onMouseKeyEvent(const MouseKeyEvent& e);
+		float getScrollOffset() const { return m_ScrollOffset; }
+		void resetScrollOffset() { m_ScrollOffset = 0.0f; }
 
-	std::unordered_map<int, ButtonData> m_KeyStates;
+		glm::vec2 getMouseDelta() const { return m_MouseDelta; }
 
-	float m_ScrollOffset = 0.0f;
+	private:
+		void onKeyEvent(const KeyEvent& e);
+		void onScrollEvent(const ScrollEvent& e);
+		void onMouseMoveEvent(const MouseMoveEvent& e);
+		void onMouseKeyEvent(const MouseKeyEvent& e);
 
-	glm::vec2 m_MousePos{ 0.0f };
-	glm::vec2 m_LastMousePos{ 0.0f };
-	glm::vec2 m_MouseDelta{ 0.0f };
-	bool m_FirstPressed = true;
-};
+		std::unordered_map<int, ButtonData> m_KeyStates;
+
+		float m_ScrollOffset = 0.0f;
+
+		glm::vec2 m_MousePos{ 0.0f };
+		glm::vec2 m_LastMousePos{ 0.0f };
+		glm::vec2 m_MouseDelta{ 0.0f };
+		bool m_FirstPressed = true;
+	};
+
+}

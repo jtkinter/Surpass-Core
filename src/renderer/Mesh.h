@@ -1,20 +1,24 @@
 #pragma once
 
-struct Vertex;
+namespace Surpass {
 
-class Mesh 
-{
-public:
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
-	~Mesh();
+	struct Vertex;
 
-	// ½ûÖ¹¿½±´
-	Mesh(const Mesh&) = delete;
-	Mesh& operator=(const Mesh&) = delete;
+	class Mesh 
+	{
+	public:
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+		~Mesh();
 
-	void draw() const;
+		// ½ûÖ¹¿½±´
+		Mesh(const Mesh&) = delete;
+		Mesh& operator=(const Mesh&) = delete;
 
-private:
-	unsigned int m_Attribute, m_Buffer, m_Element;
-	unsigned int m_IndexCount;
-};
+		void draw() const;
+
+	private:
+		unsigned int m_Attribute, m_Buffer, m_Element;
+		unsigned int m_IndexCount;
+	};
+
+}

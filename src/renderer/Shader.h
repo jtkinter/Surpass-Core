@@ -1,21 +1,27 @@
 #pragma once
 
-class Shader 
-{
-public:
-	Shader(const std::string& vertexPath, const std::string& fragmentPath);
-	~Shader();
+#include <string>
 
-	void use() const;
-	void setUniform1f(const std::string& name, float value) const;
-	void setUniform3f(const std::string& name, float v0, float v1, float v2) const;
-	void setUniform1i(const std::string& name, int value) const;
-	void setUniformMat4(const std::string& name, const glm::mat4 matrix) const;
+namespace Surpass {
 
-private:
-	unsigned int compileShader(unsigned int type, const char* source);
-	int getUniformLocation(const std::string& name) const;
-	
-	unsigned int m_ID;
-	mutable std::unordered_map<std::string, int> m_UniformLocationCache;
-};
+	class Shader
+	{
+	public:
+		Shader(const std::string& vertexPath, const std::string& fragmentPath);
+		~Shader();
+
+		void use() const;
+		void setUniform1f(const std::string& name, float value) const;
+		void setUniform3f(const std::string& name, float v0, float v1, float v2) const;
+		void setUniform1i(const std::string& name, int value) const;
+		void setUniformMat4(const std::string& name, const glm::mat4 matrix) const;
+
+	private:
+		unsigned int compileShader(unsigned int type, const char* source);
+		int getUniformLocation(const std::string& name) const;
+
+		unsigned int m_ID;
+		mutable std::unordered_map<std::string, int> m_UniformLocationCache;
+	};
+
+}

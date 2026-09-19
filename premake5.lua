@@ -1,4 +1,5 @@
 workspace "Surpass-Core"
+	startproject "Surpass-Core"
 	configurations { "Debug", "Release" }
 	platforms { "x64" }
 	

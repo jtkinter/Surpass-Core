@@ -1,17 +1,21 @@
 #pragma once
 
-class Texture 
-{
-public:
-	Texture(const std::string& filepath);
-	Texture(int width, int height, const unsigned char* data);
-	~Texture();
+namespace Surpass {
 
-	void bind(unsigned int unit) const;
+	class Texture
+	{
+	public:
+		Texture(const std::string& filepath);
+		Texture(int width, int height, const unsigned char* data);
+		~Texture();
 
-private:
-	void setup(int width, int height, const unsigned char* data);
+		void bind(unsigned int unit) const;
 
-	int m_Width, m_Height, m_BPP;
-	unsigned int m_RendererID;
-};
+	private:
+		void setup(int width, int height, const unsigned char* data);
+
+		int m_Width, m_Height, m_BPP;
+		unsigned int m_RendererID;
+	};
+
+}
