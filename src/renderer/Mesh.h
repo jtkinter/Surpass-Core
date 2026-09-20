@@ -10,9 +10,10 @@ namespace Surpass {
 		Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 		~Mesh();
 
-		// ½ûÖ¹¿½±´
 		Mesh(const Mesh&) = delete;
 		Mesh& operator=(const Mesh&) = delete;
+		Mesh(const Mesh&&) = delete;
+		Mesh&& operator=(const Mesh&&) = delete;
 
 		void draw() const;
 

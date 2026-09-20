@@ -14,5 +14,7 @@
 #include "renderer/ObjLoader.h"
 #include "renderer/Light.h"
 #include "renderer/Model.h"
+#include "renderer/Framebuffer.h"
+#include "renderer/FullScreenQuad.h"
 
 #include "utils/TextureGenerator.h"

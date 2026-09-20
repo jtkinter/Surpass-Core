@@ -46,6 +46,10 @@ project "Surpass-Core"
 		"opengl32"
 	}
 
+	defines {
+        "_CRT_SECURE_NO_WARNINGS"
+    }
+
 	filter "configurations:Debug"
 		defines { "DEBUG" }
 		symbols "on"

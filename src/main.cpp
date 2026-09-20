@@ -10,48 +10,7 @@ int main()
 	Camera camera(45.0f, window.getAspectRatio());
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 
-	// …Ë÷√∂•µ„
-	//std::vector<Vertex> vertices = {
-	//	{ {-1.0f,-1.0f, 1.0f}, { 0.0f, 0.0f} },
-	//	{ { 1.0f,-1.0f, 1.0f}, { 1.0f, 0.0f} },
-	//	{ { 1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f} },
-	//	{ {-1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f} },
-
-	//	{ {-1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
-	//	{ { 1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
-	//	{ { 1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
-	//	{ {-1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
-
-	//	{ {-1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
-	//	{ {-1.0f,-1.0f, 1.0f}, { 1.0f, 0.0f} },
-	//	{ {-1.0f, 1.0f, 1.0f}, { 1.0f, 1.0f} },
-	//	{ {-1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
-
-	//	{ { 1.0f,-1.0f, 1.0f}, { 0.0f, 0.0f} },
-	//	{ { 1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
-	//	{ { 1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
-	//	{ { 1.0f, 1.0f, 1.0f}, { 0.0f, 1.0f} },
-
-	//	{ {-1.0f,-1.0f,-1.0f}, { 0.0f, 0.0f} },
-	//	{ { 1.0f,-1.0f,-1.0f}, { 1.0f, 0.0f} },
-	//	{ { 1.0f,-1.0f, 1.0f}, { 1.0f, 1.0f} },
-	//	{ {-1.0f,-1.0f, 1.0f}, { 0.0f, 1.0f} },
-
-	//	{ {-1.0f, 1.0f, 1.0f}, { 0.0f, 0.0f} },
-	//	{ { 1.0f, 1.0f, 1.0f}, { 1.0f, 0.0f} },
-	//	{ { 1.0f, 1.0f,-1.0f}, { 1.0f, 1.0f} },
-	//	{ {-1.0f, 1.0f,-1.0f}, { 0.0f, 1.0f} },
-	//};
-
-	// …Ë÷√‰÷»æÀ˜“˝
-	std::vector<unsigned int> indices = {
-		 0, 1, 2, 2, 3, 0,
-		 4, 7, 6, 6, 5, 4,
-		 8, 9,10,10,11, 8,
-		12,13,14,14,15,12,
-		16,17,18,18,19,16,
-		20,21,22,22,23,20
-	};
+	Framebuffer scenebuf(window.getWidth(), window.getHeight());
 
 	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
 	Mesh mesh(meshData.vertices, meshData.indices);
@@ -60,7 +19,9 @@ int main()
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
-	Shader shader("res/shader/vertex.vert", "res/shader/fragment.frag");
+	Shader sceneShader("res/shader/vertex.vert", "res/shader/fragment.frag");
+	Shader postShader("res/shader/postprocess.vert", "res/shader/postprocess.frag");
+
 	std::vector<Light> lights;
 	
 	Light keyLight;
@@ -94,6 +55,7 @@ int main()
 	}
 
 	Renderer::init();
+	FullScreenQuad quad;
 
 	// —≠ª∑
 	while (!window.shouldClose())
@@ -127,22 +89,34 @@ int main()
 			Input::get().resetScrollOffset();
 		}
 
-		// ªÊ÷∆ÕºœÒ
+		// ‰÷»æ
 		Renderer::beginFrame(camera);
 		
-		shader.use();
+		// ªÊ÷∆ÕºœÒ
+		Renderer::beginPass({ &scenebuf });
+		sceneShader.use();
 		texture.bind(0);
-		shader.setUniform1i("uTexture", 0);
+		sceneShader.setUniform1i("uTexture", 0);
 		
 		for (int i = 0; i < lights.size(); ++i)
-			lights[i].apply(shader, i);
-		shader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+			lights[i].apply(sceneShader, i);
+		sceneShader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 		
 		//float time = Time::getTotalTime();
 		//glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
 		for (auto& m : models)
-			m.draw(shader);
-		shader.setUniform1i("uLightCount", lights.size());
+			m.draw(sceneShader);
+		sceneShader.setUniform1i("uLightCount", lights.size());
+		Renderer::endPass();
+
+		Renderer::beginPass({ nullptr, {0.0f, 0.0f, 0.0f, 1.0f}, true, true, window.getWidth(), window.getHeight()});
+		postShader.use();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, scenebuf.getColorAttachment());
+		postShader.setUniform1i("uScreenTexture", 0);
+		quad.draw();
+		Renderer::endPass();
+
 		Renderer::endFrame();
 
 		window.swapBuffers();

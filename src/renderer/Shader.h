@@ -10,6 +10,11 @@ namespace Surpass {
 		Shader(const std::string& vertexPath, const std::string& fragmentPath);
 		~Shader();
 
+		Shader(const Shader&) = delete;
+		Shader& operator=(const Shader&) = delete;
+		Shader(const Shader&&) = delete;
+		Shader&& operator=(const Shader&&) = delete;
+
 		void use() const;
 		void setUniform1f(const std::string& name, float value) const;
 		void setUniform3f(const std::string& name, float v0, float v1, float v2) const;

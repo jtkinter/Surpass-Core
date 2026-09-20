@@ -16,6 +16,8 @@ namespace Surpass {
 		void swapBuffers() const;
 		void pollEvents() const;
 
+		int getWidth() const { return m_Width; }
+		int getHeight() const { return m_Height; }
 		float getAspectRatio() const { return (float)m_Width / m_Height; }
 
 	private:
