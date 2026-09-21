@@ -5,8 +5,11 @@ namespace Surpass {
 	class Framebuffer
 	{
 	public:
+		Framebuffer() = default;
 		Framebuffer(int width, int height);
 		~Framebuffer();
+
+		void init(int width, int height);
 
 		Framebuffer(const Framebuffer&) = delete;
 		Framebuffer& operator=(const Framebuffer&) = delete;
@@ -19,7 +22,6 @@ namespace Surpass {
 		unsigned int getColorAttachment() const { return m_ColorAttachment; }
 
 	private:
-		void invalidate();
 		void destroy();
 
 		int m_Width;

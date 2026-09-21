@@ -6,6 +6,17 @@ namespace Surpass {
 
 	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	{
+		init(vertexPath, fragmentPath);
+	}
+
+	Shader::~Shader()
+	{
+		if (m_ID)
+			glDeleteProgram(m_ID);
+	}
+
+	void Shader::init(const std::string& vertexPath, const std::string& fragmentPath)
+	{
 		std::string vertexShaderSource = readShaderFile(vertexPath);
 		std::string fragmentShaderSource = readShaderFile(fragmentPath);
 		if (vertexShaderSource.empty() || fragmentShaderSource.empty())
@@ -37,11 +48,6 @@ namespace Surpass {
 		// 清理着色器对象
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
-	}
-
-	Shader::~Shader()
-	{
-		glDeleteProgram(m_ID);
 	}
 
 	void Shader::use() const

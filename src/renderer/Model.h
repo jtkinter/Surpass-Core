@@ -11,7 +11,7 @@ namespace Surpass {
 	{
 	public:
 		Model(const Mesh& mesh, glm::mat4& transform = glm::mat4(1.0f));
-		void draw(const Shader& shader);
+		void draw(const Shader& shader) const;
 
 	private:
 		std::reference_wrapper<const Mesh> m_Mesh;

@@ -6,8 +6,24 @@
 namespace Surpass {
 
 	Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
-		: m_IndexCount(indices.size())
 	{
+		init(vertices, indices);
+	}
+
+	Mesh::~Mesh()
+	{
+		if(m_Attribute)
+			glDeleteVertexArrays(1, &m_Attribute);
+		if(m_Buffer)
+			glDeleteBuffers(1, &m_Buffer);
+		if(m_Element)
+			glDeleteBuffers(1, &m_Element);
+	}
+
+	void Mesh::init(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+	{
+		m_IndexCount = indices.size();
+
 		glGenVertexArrays(1, &m_Attribute);
 		glBindVertexArray(m_Attribute);
 
@@ -24,13 +40,6 @@ namespace Surpass {
 		// ½â°ó
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-	}
-
-	Mesh::~Mesh()
-	{
-		glDeleteVertexArrays(1, &m_Attribute);
-		glDeleteBuffers(1, &m_Buffer);
-		glDeleteBuffers(1, &m_Element);
 	}
 
 	void Mesh::draw() const

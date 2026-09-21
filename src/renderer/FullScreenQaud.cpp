@@ -5,6 +5,19 @@ namespace Surpass {
 
 	FullScreenQuad::FullScreenQuad()
 	{
+		init();
+	}
+
+	FullScreenQuad::~FullScreenQuad()
+	{
+		if(m_Attribute)
+			glDeleteVertexArrays(1, &m_Attribute);
+		if(m_Buffer)
+			glDeleteBuffers(1, &m_Buffer);
+	}
+
+	void FullScreenQuad::init()
+	{
 		float vertices[] = {
 			-1.0f,-1.0f, 0.0f, 0.0f,
 			 1.0f,-1.0f, 1.0f, 0.0f,
@@ -28,12 +41,6 @@ namespace Surpass {
 		glEnableVertexAttribArray(1);
 
 		glBindVertexArray(0);
-	}
-
-	FullScreenQuad::~FullScreenQuad()
-	{
-		glDeleteVertexArrays(1, &m_Attribute);
-		glDeleteBuffers(1, &m_Buffer);
 	}
 
 	void FullScreenQuad::draw()

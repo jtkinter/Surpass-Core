@@ -8,31 +8,43 @@ namespace Surpass {
 
 	Texture::Texture(const std::string& filepath)
 	{
+		init(filepath);
+	}
+
+	Texture::Texture(int width, int height, const unsigned char* data)
+	{
+		init(width, height, data);
+	}
+
+	Texture::~Texture()
+	{
+		destroy();
+	}
+
+	void Texture::init(const std::string& filepath)
+	{
+		destroy();
+
 		stbi_set_flip_vertically_on_load(1);
-		unsigned char* data = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+		int width, height, bpp;
+		unsigned char* data = stbi_load(filepath.c_str(), &width, &height, &bpp, 4);
 		if (!data)
 		{
 			std::cerr << "ÎÆÀí¼ÓÔØÊ§°Ü" << std::endl;
 			return;
 		}
-		setup(m_Width, m_Height, data);
+		init(width, height, data);
 		stbi_image_free(data);
 	}
 
-	Texture::Texture(int width, int height, const unsigned char* data)
-		: m_Width(width), m_Height(height)
+	void Texture::init(int width, int height, const unsigned char* data)
 	{
+		destroy();
+
+		m_Width = width;
+		m_Height = height;
 		m_BPP = 4;
-		setup(width, height, data);
-	}
 
-	Texture::~Texture()
-	{
-		glDeleteTextures(1, &m_RendererID);
-	}
-
-	void Texture::setup(int width, int height, const unsigned char* data)
-	{
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
@@ -53,6 +65,13 @@ namespace Surpass {
 		// ¼¤»îGPU²å¿×
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+	}
+
+	void Texture::destroy()
+	{
+		if (m_RendererID)
+			glDeleteTextures(1, &m_RendererID);
+		m_RendererID = m_Width = m_Height = m_BPP = 0;
 	}
 
 }

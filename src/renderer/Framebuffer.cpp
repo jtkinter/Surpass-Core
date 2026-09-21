@@ -4,9 +4,8 @@
 namespace Surpass {
 
 	Framebuffer::Framebuffer(int width, int height)
-		: m_Width(width), m_Height(height)
 	{
-		invalidate();
+		init(width, height);
 	}
 
 	Framebuffer::~Framebuffer()
@@ -25,8 +24,11 @@ namespace Surpass {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void Framebuffer::invalidate()
+	void Framebuffer::init(int width, int height)
 	{
+		m_Width = width;
+		m_Height = height;
+
 		destroy();
 
 		glGenFramebuffers(1, &m_Framebuffer);

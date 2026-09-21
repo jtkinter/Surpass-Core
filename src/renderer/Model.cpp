@@ -12,7 +12,7 @@ namespace Surpass {
 	{
 	}
 
-	void Model::draw(const Shader& shader)
+	void Model::draw(const Shader& shader) const
 	{
 		Renderer::draw(shader, m_Mesh.get(), m_Transform);
 	}

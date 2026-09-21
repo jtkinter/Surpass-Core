@@ -8,6 +8,8 @@ namespace Surpass {
 		FullScreenQuad();
 		~FullScreenQuad();
 
+		void init();
+
 		FullScreenQuad(const FullScreenQuad&) = delete;
 		FullScreenQuad& operator=(const FullScreenQuad&) = delete;
 		FullScreenQuad(const FullScreenQuad&&) = delete;
@@ -15,7 +17,7 @@ namespace Surpass {
 
 		void draw();
 	private:
-		unsigned int m_Attribute, m_Buffer;
+		unsigned int m_Attribute = 0, m_Buffer = 0;
 	};
 
 }

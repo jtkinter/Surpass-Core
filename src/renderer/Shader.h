@@ -7,8 +7,11 @@ namespace Surpass {
 	class Shader
 	{
 	public:
+		Shader() = default;
 		Shader(const std::string& vertexPath, const std::string& fragmentPath);
 		~Shader();
+
+		void init(const std::string& vertexPath, const std::string& fragmentPath);
 
 		Shader(const Shader&) = delete;
 		Shader& operator=(const Shader&) = delete;
@@ -25,7 +28,7 @@ namespace Surpass {
 		unsigned int compileShader(unsigned int type, const char* source);
 		int getUniformLocation(const std::string& name) const;
 
-		unsigned int m_ID;
+		unsigned int m_ID = 0;
 		mutable std::unordered_map<std::string, int> m_UniformLocationCache;
 	};
 
