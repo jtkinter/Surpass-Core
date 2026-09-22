@@ -3,9 +3,9 @@
 
 namespace Surpass {
 
-	Framebuffer::Framebuffer(int width, int height)
+	Framebuffer::Framebuffer(const FramebufferSpec& spec)
 	{
-		init(width, height);
+		init(spec);
 	}
 
 	Framebuffer::~Framebuffer()
@@ -24,24 +24,33 @@ namespace Surpass {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void Framebuffer::init(int width, int height)
+	void Framebuffer::init(const FramebufferSpec& spec)
 	{
-		m_Width = width;
-		m_Height = height;
+		m_Width = spec.width;
+		m_Height = spec.height;
+		m_Spec = spec;
 
 		destroy();
 
 		glGenFramebuffers(1, &m_Framebuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_Framebuffer);
 
-		glGenTextures(1, &m_ColorAttachment);
-		glBindTexture(GL_TEXTURE_2D, m_ColorAttachment);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorAttachment, 0);
+		if (spec.depthOnly)
+		{
+			glDrawBuffer(GL_NONE);
+			glReadBuffer(GL_NONE);
+		}
+		else
+		{
+			glGenTextures(1, &m_ColorAttachment);
+			glBindTexture(GL_TEXTURE_2D, m_ColorAttachment);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorAttachment, 0);
+		}
 
 		glGenTextures(1, &m_DepthAttachment);
 		glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);

@@ -6,7 +6,10 @@ namespace Surpass {
 	class Camera
 	{
 	public:
+		enum class ProjectType { Perspective, Orthographic };
+
 		Camera(float fov = 45.0f, float aspectRatio = 16.0f / 9.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
+		Camera(float left, float right, float bottom, float top, float nearPlane, float farPlane);
 
 		glm::vec3 getForward() const { return m_ForwardVector; }
 		glm::vec3 getRight() const { return m_RightVector; }
@@ -28,8 +31,16 @@ namespace Surpass {
 		void updateVectors();
 		void updateViewMatrix();
 
+		ProjectType m_Type;
+
 		float m_Fov;			// 视场角
 		float m_AspectRatio;	// 宽高比
+
+		float m_Left = -10.0f;
+		float m_Right = 10.0f;
+		float m_Bottom = -10.0f;
+		float m_Top = 10.0f;
+
 		float m_NearPlane;		// 近裁切面
 		float m_FarPlane;		// 远裁切面
 		float m_Yaw = -90.0f;	// 偏航角

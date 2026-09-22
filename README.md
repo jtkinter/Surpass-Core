@@ -19,7 +19,7 @@ glm  | 1.0.3
 ```
 
 ### 3D效果图
-![3D效果图](res/pictures/test.png)
+![3D效果图](res/pictures/test2.png)
 
 ### 项目结构
 ```
@@ -51,9 +51,9 @@ cup(lp).obj
 
 ### 下一步
 - 进一步使用premake管理项目
-- 添加材质
-- 完整光影实现
+- 修改光影细节和Renderer类渲染调用
 - 实现多Pass渲染
+- 添加材质
 
 ## 里程碑
 - v0.1 - 实现Utils、Shader、Mesh和Window封装、引入premake项目管理和预编译头

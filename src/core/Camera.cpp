@@ -3,7 +3,15 @@
 
 namespace Surpass{
 	Camera::Camera(float fov, float aspectRatio, float nearPlane, float farPlane)
-		: m_Fov(fov), m_AspectRatio(aspectRatio), m_NearPlane(nearPlane), m_FarPlane(farPlane)
+		: m_Fov(fov), m_AspectRatio(aspectRatio), m_NearPlane(nearPlane), m_FarPlane(farPlane), m_Type(ProjectType::Perspective)
+	{
+		updateProjectMatrix();
+		updateViewMatrix();
+	}
+
+	Camera::Camera(float left, float right, float bottom, float top, float nearPlane, float farPlane)
+		: m_Left(left), m_Right(right), m_Bottom(bottom), m_Top(top),
+		  m_NearPlane(nearPlane), m_FarPlane(farPlane), m_Type(ProjectType::Orthographic)
 	{
 		updateProjectMatrix();
 		updateViewMatrix();
@@ -11,7 +19,10 @@ namespace Surpass{
 
 	void Camera::updateProjectMatrix()
 	{
-		m_ProjectMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
+		if (m_Type == ProjectType::Perspective)
+			m_ProjectMatrix = glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
+		else
+			m_ProjectMatrix = glm::ortho(m_Left, m_Right, m_Bottom, m_Top, m_NearPlane, m_FarPlane);
 	}
 
 	void Camera::updateVectors()

@@ -5,17 +5,15 @@ using namespace Surpass;
 
 int main()
 {
-	Window window(800, 600, "Surpass Engine");
+	Window window(1920, 1080, "Surpass Engine");
 
 	Camera camera(45.0f, window.getAspectRatio());
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 
-	Framebuffer scenebuf(window.getWidth(), window.getHeight());
+	Framebuffer scenebuf({ window.getWidth(), window.getHeight() });
 
 	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
 	Mesh mesh(meshData.vertices, meshData.indices);
-
-	//Texture texture("res/textures/logo.png");
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
@@ -57,6 +55,19 @@ int main()
 	Renderer::init();
 	FullScreenQuad quad;
 
+	glm::vec3 sceneCenter{ 0.0f, 0.0f, 0.0f };
+	glm::vec3 lightDir = glm::normalize(sceneCenter - keyLight.pos);
+	glm::vec3 viewPos = sceneCenter - lightDir * 20.0f;
+
+	float cameraSize = 5.0f;
+	Camera lightCamera(-cameraSize, cameraSize, -cameraSize, cameraSize, 1.0f, 50.0f);
+	lightCamera.setPosition(viewPos);
+	lightCamera.setRotation(glm::degrees(asin(lightDir.y)), glm::degrees(atan2(lightDir.z, lightDir.x)));
+	glm::mat4 lightSpace = lightCamera.getProjectionMatrix() * lightCamera.getViewMatrix();
+
+	Framebuffer shadowbuffer({ 1024, 1024, true });
+	Shader shadowShader("res/shader/shadow.vert", "res/shader/shadow.frag");
+
 	// —≠ª∑
 	while (!window.shouldClose())
 	{
@@ -90,25 +101,37 @@ int main()
 		}
 
 		// ‰÷»æ
-		Renderer::beginFrame(camera);
+		// pass1 ‰÷»æ“ı”∞
+		Renderer::beginFrame(lightCamera);
+		Renderer::beginPass({ &shadowbuffer });
+		shadowShader.use();
+		shadowShader.setUniformMat4("uLightSpaceMatrix", lightSpace);
+		for (auto& m : models)
+			m.draw(shadowShader);
+		Renderer::endPass();
 		
-		// ªÊ÷∆ÕºœÒ
+		// pass2 ªÊ÷∆ÕºœÒ
+		Renderer::beginFrame(camera);
 		Renderer::beginPass({ &scenebuf });
 		sceneShader.use();
 		texture.bind(0);
 		sceneShader.setUniform1i("uTexture", 0);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, shadowbuffer.getDepthAttachment());
+		sceneShader.setUniform1i("uShadowMap", 1);
+		sceneShader.setUniformMat4("uLightSpaceMatrix", lightSpace);
 		
 		for (int i = 0; i < lights.size(); ++i)
 			lights[i].apply(sceneShader, i);
 		sceneShader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 		
-		//float time = Time::getTotalTime();
-		//glm::mat4 model = glm::rotate(glm::mat4(1.0f), time, glm::vec3(0.5f, 1.0f, 0.0f));
 		for (auto& m : models)
 			m.draw(sceneShader);
-		sceneShader.setUniform1i("uLightCount", lights.size());
+		sceneShader.setUniform1i("uLightCount", (int)lights.size());
 		Renderer::endPass();
 
+		// pass3 ‰÷»æµΩ∆¡ƒª
 		Renderer::beginPass({ nullptr, {0.0f, 0.0f, 0.0f, 1.0f}, true, true, window.getWidth(), window.getHeight()});
 		postShader.use();
 		glActiveTexture(GL_TEXTURE0);

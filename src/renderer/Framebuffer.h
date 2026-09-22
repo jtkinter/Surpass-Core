@@ -2,14 +2,21 @@
 
 namespace Surpass {
 
+	struct FramebufferSpec
+	{
+		int width = 0;
+		int height = 0;
+		bool depthOnly = false;
+	};
+
 	class Framebuffer
 	{
 	public:
 		Framebuffer() = default;
-		Framebuffer(int width, int height);
+		Framebuffer(const FramebufferSpec& spec);
 		~Framebuffer();
 
-		void init(int width, int height);
+		void init(const FramebufferSpec& spec);
 
 		Framebuffer(const Framebuffer&) = delete;
 		Framebuffer& operator=(const Framebuffer&) = delete;
@@ -20,6 +27,7 @@ namespace Surpass {
 		void unbind();
 
 		unsigned int getColorAttachment() const { return m_ColorAttachment; }
+		unsigned int getDepthAttachment() const { return m_DepthAttachment; }
 
 	private:
 		void destroy();
@@ -30,5 +38,7 @@ namespace Surpass {
 		unsigned int m_Framebuffer = 0;
 		unsigned int m_ColorAttachment = 0;
 		unsigned int m_DepthAttachment = 0;
+
+		FramebufferSpec m_Spec;
 	};
 }
