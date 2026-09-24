@@ -15,8 +15,8 @@ namespace Surpass {
 
 		Texture(const Texture&) = delete;
 		Texture& operator=(const Texture&) = delete;
-		Texture(const Texture&&) = delete;
-		Texture&& operator=(const Texture&&) = delete;
+		Texture(Texture&&) = delete;
+		Texture& operator=(const Texture&&) = delete;
 
 		void bind(unsigned int unit) const;
 

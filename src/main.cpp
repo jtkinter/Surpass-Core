@@ -7,18 +7,17 @@ int main()
 {
 	Window window(1920, 1080, "Surpass Engine");
 
+	Scene scene;
+
 	Camera camera(45.0f, window.getAspectRatio());
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
-
-	Framebuffer scenebuf({ window.getWidth(), window.getHeight() });
+	scene.setCamera(camera);
 
 	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
 	Mesh mesh(meshData.vertices, meshData.indices);
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
-	Shader sceneShader("res/shader/vertex.vert", "res/shader/fragment.frag");
-	Shader postShader("res/shader/postprocess.vert", "res/shader/postprocess.frag");
 
 	std::vector<Light> lights;
 	
@@ -40,6 +39,8 @@ int main()
 	rimLight.intensity = 0.6f;
 	lights.push_back(rimLight);
 
+	scene.addLights(lights);
+
 	const int count = 3;
 	const float spacing = 0.5;
 	float offset = (count - 1) * spacing;
@@ -51,22 +52,17 @@ int main()
 		Model model(mesh, transform);
 		models.push_back(model);
 	}
+	scene.addModels(models);
 
 	Renderer::init();
-	FullScreenQuad quad;
 
-	glm::vec3 sceneCenter{ 0.0f, 0.0f, 0.0f };
-	glm::vec3 lightDir = glm::normalize(sceneCenter - keyLight.pos);
-	glm::vec3 viewPos = sceneCenter - lightDir * 20.0f;
-
-	float cameraSize = 5.0f;
-	Camera lightCamera(-cameraSize, cameraSize, -cameraSize, cameraSize, 1.0f, 50.0f);
-	lightCamera.setPosition(viewPos);
-	lightCamera.setRotation(glm::degrees(asin(lightDir.y)), glm::degrees(atan2(lightDir.z, lightDir.x)));
-	glm::mat4 lightSpace = lightCamera.getProjectionMatrix() * lightCamera.getViewMatrix();
-
-	Framebuffer shadowbuffer({ 1024, 1024, true });
-	Shader shadowShader("res/shader/shadow.vert", "res/shader/shadow.frag");
+	ShadowPass shadowPass;
+	shadowPass.init(1024, 1024);
+	SceneManager manager;
+	MainPass mainPass;
+	mainPass.init(window.getWidth(), window.getHeight());
+	PostProcessPass postPass;
+	postPass.init(window.getWidth(), window.getHeight());
 
 	// 循环
 	while (!window.shouldClose())
@@ -78,67 +74,39 @@ int main()
 		
 		float speed = 3.0f * Time::getDeltaTime();
 		float rotSpeed = 50.0f * Time::getDeltaTime();
+		Camera& mainCamera = scene.getCamera();
 
 		// WASD移动 目前ws是放大缩小
-		if (Input::get().isKeyPressed(GLFW_KEY_W)) camera.move(camera.getUp() * speed);
-		if (Input::get().isKeyPressed(GLFW_KEY_S)) camera.move(-camera.getUp() * speed);
-		if (Input::get().isKeyPressed(GLFW_KEY_A)) camera.move(-camera.getRight() * speed);
-		if (Input::get().isKeyPressed(GLFW_KEY_D)) camera.move(camera.getRight() * speed);
-		if (Input::get().isKeyPressed(GLFW_KEY_Q)) camera.rotate(0.0f, -rotSpeed);
-		if (Input::get().isKeyPressed(GLFW_KEY_E)) camera.rotate(0.0f, rotSpeed);
+		if (Input::get().isKeyPressed(GLFW_KEY_W)) mainCamera.move(mainCamera.getUp() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_S)) mainCamera.move(-mainCamera.getUp() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_A)) mainCamera.move(-mainCamera.getRight() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_D)) mainCamera.move(mainCamera.getRight() * speed);
+		if (Input::get().isKeyPressed(GLFW_KEY_Q)) mainCamera.rotate(0.0f, -rotSpeed);
+		if (Input::get().isKeyPressed(GLFW_KEY_E)) mainCamera.rotate(0.0f, rotSpeed);
 		if (Input::get().isKeyPressed(GLFW_MOUSE_BUTTON_RIGHT))
 		{
 			auto& mouseDelta = Input::get().getMouseDelta();
 			float mouseSpeed = 0.15f;
-			camera.rotate(-mouseDelta.y * mouseSpeed, mouseDelta.x * mouseSpeed);
+			mainCamera.rotate(-mouseDelta.y * mouseSpeed, mouseDelta.x * mouseSpeed);
 		}
 
 		float scroll = Input::get().getScrollOffset();
 		if (scroll != 0.0f)
 		{
-			camera.move(camera.getForward() * scroll * 0.25f);
+			mainCamera.move(mainCamera.getForward() * scroll * 0.25f);
 			Input::get().resetScrollOffset();
 		}
 
 		// 渲染
+		manager.update(scene);
+		Renderer::beginFrame();
+
 		// pass1 渲染阴影
-		Renderer::beginFrame(lightCamera);
-		Renderer::beginPass({ &shadowbuffer });
-		shadowShader.use();
-		shadowShader.setUniformMat4("uLightSpaceMatrix", lightSpace);
-		for (auto& m : models)
-			m.draw(shadowShader);
-		Renderer::endPass();
-		
+		shadowPass.execute(scene);
 		// pass2 绘制图像
-		Renderer::beginFrame(camera);
-		Renderer::beginPass({ &scenebuf });
-		sceneShader.use();
-		texture.bind(0);
-		sceneShader.setUniform1i("uTexture", 0);
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, shadowbuffer.getDepthAttachment());
-		sceneShader.setUniform1i("uShadowMap", 1);
-		sceneShader.setUniformMat4("uLightSpaceMatrix", lightSpace);
-		
-		for (int i = 0; i < lights.size(); ++i)
-			lights[i].apply(sceneShader, i);
-		sceneShader.setUniform3f("uViewPos", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
-		
-		for (auto& m : models)
-			m.draw(sceneShader);
-		sceneShader.setUniform1i("uLightCount", (int)lights.size());
-		Renderer::endPass();
-
+		mainPass.execute(scene, texture, shadowPass.getFramebuffer().getDepthAttachment());
 		// pass3 渲染到屏幕
-		Renderer::beginPass({ nullptr, {0.0f, 0.0f, 0.0f, 1.0f}, true, true, window.getWidth(), window.getHeight()});
-		postShader.use();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, scenebuf.getColorAttachment());
-		postShader.setUniform1i("uScreenTexture", 0);
-		quad.draw();
-		Renderer::endPass();
+		postPass.execute(mainPass.getFramebuffer().getColorAttachment());
 
 		Renderer::endFrame();
 

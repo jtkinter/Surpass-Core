@@ -1,7 +1,7 @@
 #include "sppch.h"
 #include "Light.h"
 
-#include "Shader.h"
+#include "renderer/Shader.h"
 
 namespace Surpass {
 

@@ -20,8 +20,8 @@ namespace Surpass {
 
 		Framebuffer(const Framebuffer&) = delete;
 		Framebuffer& operator=(const Framebuffer&) = delete;
-		Framebuffer(const Framebuffer&&) = delete;
-		Framebuffer&& operator=(const Framebuffer&&) = delete;
+		Framebuffer(Framebuffer&&) = delete;
+		Framebuffer& operator=(const Framebuffer&&) = delete;
 
 		void bind();
 		void unbind();
@@ -32,8 +32,8 @@ namespace Surpass {
 	private:
 		void destroy();
 
-		int m_Width;
-		int m_Height;
+		int m_Width = 0;
+		int m_Height = 0;
 
 		unsigned int m_Framebuffer = 0;
 		unsigned int m_ColorAttachment = 0;

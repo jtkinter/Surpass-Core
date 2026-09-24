@@ -5,7 +5,6 @@
 
 namespace Surpass {
 
-	class Camera;
 	class Shader;
 	class Mesh;
 
@@ -24,17 +23,13 @@ namespace Surpass {
 	public:
 		static void init();
 
-		static void beginFrame(const Camera& camera);
+		static void beginFrame();
 		static void endFrame();
 
 		static void beginPass(const PassDesc& desc);
 		static void endPass();
 
 		static void draw(const Shader& shader, const Mesh& mesh, const glm::mat4& model = glm::mat4(1.0f));
-
-	private:
-		static glm::mat4 m_ViewMatrix;
-		static glm::mat4 m_ProjectMatrix;
 	};
 
 }

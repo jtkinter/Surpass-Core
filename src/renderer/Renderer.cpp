@@ -1,14 +1,11 @@
 #include "sppch.h"
 
 #include "Renderer.h"
-#include "core/Camera.h"
+#include "world/Camera.h"
 #include "Shader.h"
 #include "Mesh.h"
 
 namespace Surpass {
-
-	glm::mat4 Renderer::m_ViewMatrix{ 1.0f };
-	glm::mat4 Renderer::m_ProjectMatrix{ 1.0f };
 
 	void Renderer::init()
 	{
@@ -20,15 +17,12 @@ namespace Surpass {
 		glFrontFace(GL_CCW);
 	}
 
-	void Renderer::beginFrame(const Camera& camera)
+	void Renderer::beginFrame()
 	{
-		m_ViewMatrix = camera.getViewMatrix();
-		m_ProjectMatrix = camera.getProjectionMatrix();
 	}
 
 	void Renderer::endFrame()
 	{
-
 	}
 
 	void Renderer::beginPass(const PassDesc& desc)
@@ -62,8 +56,6 @@ namespace Surpass {
 	{
 		shader.use();
 		shader.setUniformMat4("uModel", model);
-		shader.setUniformMat4("uView", m_ViewMatrix);
-		shader.setUniformMat4("uProjection", m_ProjectMatrix);
 		mesh.draw();
 	}
 
