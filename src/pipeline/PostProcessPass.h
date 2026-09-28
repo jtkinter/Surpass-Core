@@ -9,13 +9,18 @@ namespace Surpass {
 	{
 	public:
 		bool init(int width, int height) override;
-		void execute(unsigned int colorAttachment);
+		bool resize(int width, int height) override;
+		void execute(const Scene& scene) override;
+
+		void setColorAttachment(unsigned int colorAttachment) { m_ColorAttachment = colorAttachment; }
 
 	private:
 		Shader m_Shader;
 		FullScreenQuad m_Quad;
 		int m_Width = 0;
 		int m_Height = 0;
+
+		unsigned int m_ColorAttachment;
 	};
 
 }

@@ -14,7 +14,13 @@ namespace Surpass {
 		return true;
 	}
 
-	void MainPass::execute(const Scene& scene, const Texture& texture, unsigned int depthAttachment)
+	bool MainPass::resize(int width, int height)
+	{
+		m_Framebuffer.resize(width, height);
+		return true;
+	}
+
+	void MainPass::execute(const Scene& scene)
 	{
 		Renderer::beginPass({ &m_Framebuffer });
 		m_Shader.use();
@@ -24,11 +30,14 @@ namespace Surpass {
 		m_Shader.setUniformMat4("uView", camera.getViewMatrix());
 		m_Shader.setUniformMat4("uProjection", camera.getProjectionMatrix());
 
-		texture.bind(0);
-		m_Shader.setUniform1i("uTexture", 0);
+		if (m_Texture)
+		{
+			m_Texture->bind(0);
+			m_Shader.setUniform1i("uTexture", 0);
+		}
 
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, depthAttachment);
+		glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);
 		m_Shader.setUniform1i("uShadowMap", 1);
 		m_Shader.setUniformMat4("uLightSpaceMatrix", scene.getLightSpaceMatrix());
 
@@ -39,8 +48,6 @@ namespace Surpass {
 		for (auto& m : scene.getModels())
 			m.draw(m_Shader);
 		m_Shader.setUniform1i("uLightCount", (int)lights.size());
-
-
 
 		Renderer::endPass();
 	}

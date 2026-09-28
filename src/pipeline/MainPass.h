@@ -1,6 +1,5 @@
 #pragma once
 #include "RenderPass.h"
-#include "world/Scene.h"
 #include "renderer/Shader.h"
 #include "renderer/Framebuffer.h"
 #include "renderer/Texture.h"
@@ -12,12 +11,18 @@ namespace Surpass {
 	{
 	public:
 		bool init(int width, int height) override;
-		void execute(const Scene& scene, const Texture& texture, unsigned int depthAttachment);
+		bool resize(int width, int height) override;
+		void execute(const Scene& scene) override;
 		const Framebuffer& getFramebuffer() const { return m_Framebuffer; }
+
+		void setTexture(const Texture* texture) { m_Texture = texture; }
+		void setDepthAttachment(unsigned int depthAttachment) { m_DepthAttachment = depthAttachment; }
 
 	private:
 		Shader m_Shader;
 		Framebuffer m_Framebuffer;
+		unsigned int m_DepthAttachment;
+		const Texture* m_Texture = nullptr;
 	};
 
 }

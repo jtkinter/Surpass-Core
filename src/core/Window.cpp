@@ -25,6 +25,7 @@ namespace Surpass {
 			std::exit(-1);
 		}
 		glfwMakeContextCurrent(m_Window);
+		glfwSetWindowUserPointer(m_Window, this);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
@@ -93,6 +94,15 @@ namespace Surpass {
 			MouseKeyEvent event(key, state);
 			EventDispatcher::get().dispatch(event);
 		});
-	}
 
+		glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int w, int h)
+		{
+			auto* self = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			self->m_Width = w;
+			self->m_Height = h;
+
+			WindowResizeEvent event(w, h);
+			EventDispatcher::get().dispatch(event);
+		});
+	}
 }

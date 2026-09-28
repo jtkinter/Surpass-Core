@@ -12,7 +12,7 @@ namespace Surpass {
 	{
 	public:
 		bool init(int width, int height) override;
-		void execute(const Scene& scene);
+		void execute(const Scene& scene) override;
 
 		const Framebuffer& getFramebuffer() const { return m_Framebuffer; }
 

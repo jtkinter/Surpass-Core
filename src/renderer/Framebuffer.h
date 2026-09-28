@@ -26,14 +26,14 @@ namespace Surpass {
 		void bind();
 		void unbind();
 
+		void resize(int width, int height);
+
 		unsigned int getColorAttachment() const { return m_ColorAttachment; }
 		unsigned int getDepthAttachment() const { return m_DepthAttachment; }
 
 	private:
 		void destroy();
-
-		int m_Width = 0;
-		int m_Height = 0;
+		void create();
 
 		unsigned int m_Framebuffer = 0;
 		unsigned int m_ColorAttachment = 0;

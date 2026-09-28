@@ -61,8 +61,27 @@ int main()
 	SceneManager manager;
 	MainPass mainPass;
 	mainPass.init(window.getWidth(), window.getHeight());
+	mainPass.setTexture(&texture);
 	PostProcessPass postPass;
 	postPass.init(window.getWidth(), window.getHeight());
+
+	// ºÏ≤È÷ÿ÷√
+	EventDispatcher::get().subscribe(EventType::WindowResizeEvent, [&](const Event& e)
+	{
+		const WindowResizeEvent& event = static_cast<const WindowResizeEvent&>(e);
+		int width = event.width;
+		int height = event.height;
+
+		if (width <= 0 || height <= 0)
+		{
+			Log::warn("Œﬁ–ß¥∞ø⁄£°£°£°");
+			return;
+		}
+		scene.getCamera().setAspectRatio((float)width / height);
+		shadowPass.resize(width, height);
+		mainPass.resize(width, height);
+		postPass.resize(width, height);
+	});
 
 	// —≠ª∑
 	while (!window.shouldClose())
@@ -104,16 +123,16 @@ int main()
 		// pass1 ‰÷»æ“ı”∞
 		shadowPass.execute(scene);
 		// pass2 ªÊ÷∆ÕºœÒ
-		mainPass.execute(scene, texture, shadowPass.getFramebuffer().getDepthAttachment());
+		mainPass.setDepthAttachment(shadowPass.getFramebuffer().getDepthAttachment());
+		mainPass.execute(scene);
 		// pass3 ‰÷»æµΩ∆¡ƒª
-		postPass.execute(mainPass.getFramebuffer().getColorAttachment());
+		postPass.setColorAttachment(mainPass.getFramebuffer().getColorAttachment());
+		postPass.execute(scene);
 
 		Renderer::endFrame();
 
 		window.swapBuffers();
 	}
-
-	glfwTerminate();
 
 	return 0;
 }

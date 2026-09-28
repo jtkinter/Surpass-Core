@@ -17,7 +17,8 @@ namespace Surpass {
 		KeyEvent,
 		ScrollEvent,
 		MouseMoveEvent,
-		MouseKeyEvent
+		MouseKeyEvent,
+		WindowResizeEvent
 	};
 
 	struct Event
@@ -65,6 +66,17 @@ namespace Surpass {
 
 		MouseKeyEvent(int code, ButtonState ks)
 			: Event{ EventType::MouseKeyEvent }, keyCode(code), state(ks)
+		{
+		}
+	};
+
+	struct WindowResizeEvent : public Event
+	{
+		int width;
+		int height;
+
+		WindowResizeEvent(int w, int h)
+			: Event{ EventType::WindowResizeEvent }, width(w), height(h)
 		{
 		}
 	};
