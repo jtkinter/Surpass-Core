@@ -56,14 +56,14 @@ int main()
 
 	Renderer::init();
 
-	ShadowPass shadowPass;
-	shadowPass.init(1024, 1024);
 	SceneManager manager;
-	MainPass mainPass;
-	mainPass.init(window.getWidth(), window.getHeight());
-	mainPass.setTexture(&texture);
-	PostProcessPass postPass;
-	postPass.init(window.getWidth(), window.getHeight());
+	ForwardPipeline pipeline;
+	pipeline.init(window.getWidth(), window.getHeight());
+
+	auto mainPass = std::make_unique<MainPass>();
+	mainPass->init(window.getWidth(), window.getHeight());
+	mainPass->setTexture(&texture);
+	pipeline.setMainPass(std::move(mainPass));
 
 	// ºÏ≤È÷ÿ÷√
 	EventDispatcher::get().subscribe(EventType::WindowResizeEvent, [&](const Event& e)
@@ -78,9 +78,7 @@ int main()
 			return;
 		}
 		scene.getCamera().setAspectRatio((float)width / height);
-		shadowPass.resize(width, height);
-		mainPass.resize(width, height);
-		postPass.resize(width, height);
+		pipeline.resize(width, height);
 	});
 
 	// —≠ª∑
@@ -120,14 +118,7 @@ int main()
 		manager.update(scene);
 		Renderer::beginFrame();
 
-		// pass1 ‰÷»æ“ı”∞
-		shadowPass.execute(scene);
-		// pass2 ªÊ÷∆ÕºœÒ
-		mainPass.setDepthAttachment(shadowPass.getFramebuffer().getDepthAttachment());
-		mainPass.execute(scene);
-		// pass3 ‰÷»æµΩ∆¡ƒª
-		postPass.setColorAttachment(mainPass.getFramebuffer().getColorAttachment());
-		postPass.execute(scene);
+		pipeline.render(scene);
 
 		Renderer::endFrame();
 

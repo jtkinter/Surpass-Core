@@ -12,7 +12,7 @@ namespace Surpass {
 		bool resize(int width, int height) override;
 		void execute(const Scene& scene) override;
 
-		void setColorAttachment(unsigned int colorAttachment) { m_ColorAttachment = colorAttachment; }
+		void setColorInput(unsigned int input) override { m_ColorAttachment = input; }
 
 	private:
 		Shader m_Shader;
@@ -20,7 +20,7 @@ namespace Surpass {
 		int m_Width = 0;
 		int m_Height = 0;
 
-		unsigned int m_ColorAttachment;
+		unsigned int m_ColorAttachment = 0;
 	};
 
 }

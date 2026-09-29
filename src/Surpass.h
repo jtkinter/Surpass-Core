@@ -27,6 +27,7 @@
 #include "pipeline/ShadowPass.h"
 #include "pipeline/MainPass.h"
 #include "pipeline/PostProcessPass.h"
+#include "pipeline/ForwardPipeline.h"
 
 // 通用工具
 #include "utils/TextureGenerator.h"

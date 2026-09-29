@@ -14,7 +14,7 @@ namespace Surpass {
 		bool init(int width, int height) override;
 		void execute(const Scene& scene) override;
 
-		const Framebuffer& getFramebuffer() const { return m_Framebuffer; }
+		unsigned int getDepthOutput() const override { return m_Framebuffer.getDepthAttachment(); }
 
 	private:
 		Framebuffer m_Framebuffer;
