@@ -7,10 +7,17 @@ in vec4 v_LightSpacePos;
 
 out vec4 FragColor;
 
-uniform sampler2D uTexture; // 纹理解释器
-uniform vec3 uViewPos;		// 相机位置
-uniform sampler2D uShadowMap;
+// 材质
+uniform vec3 uBaseColor;
+uniform sampler2D uDiffuseMap;
+uniform bool uHasDiffuseMap;
+uniform float uShininess;
 
+// 光照相机参数（投影）
+uniform vec3 uViewPos;			// 相机位置
+uniform sampler2D uShadowMap;	// 深度图
+
+// 光亮
 const int MAX_LIGHTS = 8;
 uniform int uLightCount;
 uniform vec3 uLightPos[MAX_LIGHTS];		// 光源位置
@@ -34,7 +41,9 @@ float calculateShadow(vec4 lightSpacePos, vec3 norm, vec3 lightDir)
 
 void main()
 {
-	vec4 texColor = texture(uTexture, v_TexCoord);
+	vec3 baseColor = uBaseColor;
+	if (uHasDiffuseMap)
+		baseColor *= texture(uDiffuseMap, v_TexCoord).rbg;
 	vec3 norm = normalize(v_Normal);
 	vec3 viewDir = normalize(uViewPos - v_FragPos);
 
@@ -58,7 +67,7 @@ void main()
 		vec3 diffuse = diff * uLightColor[i];
 
 		// 镜面反射
-		float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+		float spec = pow(max(dot(viewDir, reflectDir), 0.0), uShininess);
 		vec3 specular = 0.5 * spec * uLightColor[i];
 
 		// 阴影
@@ -68,5 +77,5 @@ void main()
 	}
 	result += ambient / vec3(uLightCount);
 	
-	FragColor = vec4(result * texColor.rgb, texColor.a);
+	FragColor = vec4(result * baseColor, 1.0);
 }

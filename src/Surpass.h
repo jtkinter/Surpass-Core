@@ -10,7 +10,6 @@
 #include "renderer/Shader.h"
 #include "renderer/Vertex.h"
 #include "renderer/Mesh.h"
-#include "renderer/Texture.h"
 #include "renderer/Renderer.h"
 #include "renderer/ObjLoader.h"
 #include "renderer/Framebuffer.h"
@@ -22,6 +21,7 @@
 #include "world/Model.h"
 #include "world/Scene.h"
 #include "world/SceneManager.h"
+#include "world/Material.h"
 
 // passπ‹œﬂ
 #include "pipeline/ShadowPass.h"

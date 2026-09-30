@@ -15,12 +15,14 @@
 **适用平台**：x64
 
 ### 使用的第三方库
-```
-GLFW | 3.5.1            | https://www.glfw.org/download.html
-GLAD | Core Profile 4.6 |
-stb  | 
-glm  | 1.0.3
-```
+
+| LIB  | Version          | website / get way                  |
+| ---- | ---------------- | ---------------------------------- |
+| GLFW | 3.5.1            | https://www.glfw.org/download.html |
+| GLAD | Core Profile 4.6 |
+| stb  |
+| glm  | 1.0.3            |
+
 
 ### 3D效果图
 ![3D效果图](res/pictures/test2.png)
@@ -58,7 +60,7 @@ cup(lp).obj
 ### 下一步
 - 进一步使用premake管理项目
 - 修改光影细节
-- 添加材质
+- 进一步优化材质系统
 
 ## 里程碑
 - v0.1 - 实现Utils、Shader、Mesh和Window封装、引入premake项目管理和预编译头

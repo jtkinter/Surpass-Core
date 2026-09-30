@@ -15,7 +15,6 @@ namespace Surpass {
 		void execute(const Scene& scene) override;
 		const Framebuffer& getFramebuffer() const { return m_Framebuffer; }
 
-		void setTexture(const Texture* texture) { m_Texture = texture; }
 		void setDepthInput(unsigned int input) override { m_DepthAttachment = input; }
 
 		unsigned int getColorOutput() const override { return m_Framebuffer.getColorAttachment(); }
@@ -24,7 +23,6 @@ namespace Surpass {
 		Shader m_Shader;
 		Framebuffer m_Framebuffer;
 		unsigned int m_DepthAttachment = 0;
-		const Texture* m_Texture = nullptr;
 	};
 
 }

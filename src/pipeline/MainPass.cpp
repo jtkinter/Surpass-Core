@@ -30,12 +30,6 @@ namespace Surpass {
 		m_Shader.setUniformMat4("uView", camera.getViewMatrix());
 		m_Shader.setUniformMat4("uProjection", camera.getProjectionMatrix());
 
-		if (m_Texture)
-		{
-			m_Texture->bind(0);
-			m_Shader.setUniform1i("uTexture", 0);
-		}
-
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);
 		m_Shader.setUniform1i("uShadowMap", 1);
@@ -46,7 +40,10 @@ namespace Surpass {
 			lights[i].apply(m_Shader, i);
 
 		for (auto& m : scene.getModels())
+		{
+			m.getMaterial().apply(m_Shader);
 			m.draw(m_Shader);
+		}
 		m_Shader.setUniform1i("uLightCount", (int)lights.size());
 
 		Renderer::endPass();

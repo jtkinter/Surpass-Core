@@ -7,8 +7,8 @@
 
 namespace Surpass {
 
-	Model::Model(const Mesh& mesh, const glm::mat4& transform)
-		: m_Mesh(mesh), m_Transform(transform)
+	Model::Model(const Mesh& mesh, const Material& material, const glm::mat4& transform)
+		: m_Mesh(mesh), m_Material(material), m_Transform(transform)
 	{
 	}
 

@@ -19,6 +19,11 @@ int main()
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
 
+	Material material;
+	material.baseColor = glm::vec3(1.0f);
+	material.shininess = 32.0f;
+	material.diffuseMap = &texture;
+
 	std::vector<Light> lights;
 	
 	Light keyLight;
@@ -49,7 +54,7 @@ int main()
 	for (int i = 0; i < count; ++i)
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(offset + i * spacing, 0.0f, 0.0f));
-		Model model(mesh, transform);
+		Model model(mesh, material, transform);
 		models.push_back(model);
 	}
 	scene.addModels(models);
@@ -59,11 +64,6 @@ int main()
 	SceneManager manager;
 	ForwardPipeline pipeline;
 	pipeline.init(window.getWidth(), window.getHeight());
-
-	auto mainPass = std::make_unique<MainPass>();
-	mainPass->init(window.getWidth(), window.getHeight());
-	mainPass->setTexture(&texture);
-	pipeline.setMainPass(std::move(mainPass));
 
 	// ºÏ≤È÷ÿ÷√
 	EventDispatcher::get().subscribe(EventType::WindowResizeEvent, [&](const Event& e)
