@@ -7,7 +7,7 @@ namespace Surpass {
 	bool ShadowPass::init(int width, int height)
 	{
 		m_Framebuffer.init({ width, height, true });
-		m_Shader.init("res/shader/shadow.vert", "res/shader/shadow.frag");
+		m_Shader.init(getResourceDir("shader/shadow.vert"), getResourceDir("shader/shadow.frag"));
 
 		return true;
 	}

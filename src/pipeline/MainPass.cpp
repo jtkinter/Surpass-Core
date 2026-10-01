@@ -8,7 +8,7 @@ namespace Surpass {
 
 	bool MainPass::init(int width, int height)
 	{
-		m_Shader.init("res/shader/vertex.vert", "res/shader/fragment.frag");
+		m_Shader.init(getResourceDir("shader/vertex.vert"), getResourceDir("shader/fragment.frag"));
 		m_Framebuffer.init({ width, height });
 
 		return true;

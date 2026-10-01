@@ -6,7 +6,7 @@ namespace Surpass {
 
 	bool PostProcessPass::init(int width, int height)
 	{
-		m_Shader.init("res/shader/postprocess.vert", "res/shader/postprocess.frag");
+		m_Shader.init(getResourceDir("shader/postprocess.vert"), getResourceDir("shader/postprocess.frag"));
 		m_Quad.init();
 		m_Width = width;
 		m_Height = height;

@@ -20,6 +20,8 @@ namespace Surpass {
 
 		void bind(unsigned int unit) const;
 
+		bool empty() const { return m_Width == 0 && m_Height == 0 && m_BPP == 0; }
+
 	private:
 		void destroy();
 
