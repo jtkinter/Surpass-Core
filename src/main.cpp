@@ -13,7 +13,8 @@ int main()
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 	scene.setCamera(camera);
 
-	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
+	//ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
+	Primitive::MeshData meshData = Primitive::sphere();
 	Mesh mesh(meshData.vertices, meshData.indices);
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
@@ -47,7 +48,7 @@ int main()
 	scene.addLights(lights);
 
 	const int count = 3;
-	const float spacing = 0.5;
+	const float spacing = 1.5f;
 	float offset = (count - 1) * spacing;
 	std::vector<Model> models;
 	models.reserve(count);
@@ -59,11 +60,20 @@ int main()
 	}
 	scene.addModels(models);
 
+	Log::info("Window: ", window.getWidth(), " x ", window.getHeight(),
+          " aspect=", window.getAspectRatio());
+	Log::info("Camera aspect: ", scene.getCamera().getAspectRatio());
+
 	Renderer::init();
 
 	SceneManager manager;
 	ForwardPipeline pipeline;
 	pipeline.init(window.getWidth(), window.getHeight());
+
+	int fbW, fbH;
+	glfwGetFramebufferSize(glfwGetCurrentContext(), &fbW, &fbH);
+	Log::info("Window size: ", window.getWidth(), "x", window.getHeight());
+	Log::info("Framebuffer size: ", fbW, "x", fbH);
 
 	// ºÏ≤È÷ÿ÷√
 	EventDispatcher::get().subscribe(EventType::WindowResizeEvent, [&](const Event& e)

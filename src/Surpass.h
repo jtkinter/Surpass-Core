@@ -32,3 +32,4 @@
 // 通用工具
 #include "utils/TextureGenerator.h"
 #include "utils/Path.h"
+#include "geometry/Primitive.h"

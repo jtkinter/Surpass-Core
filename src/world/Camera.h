@@ -18,6 +18,8 @@ namespace Surpass {
 		glm::mat4 getViewMatrix() const { return m_ViewMatrix; }
 		glm::mat4 getProjectionMatrix() const { return m_ProjectMatrix; }
 
+		float getAspectRatio() const { return m_AspectRatio; }
+
 		void setPosition(const glm::vec3& position);
 		void setRotation(float pitch, float yaw);
 		void setAspectRatio(float aspectRatio);
@@ -33,8 +35,8 @@ namespace Surpass {
 
 		ProjectType m_Type;
 
-		float m_Fov;			// 视场角
-		float m_AspectRatio;	// 宽高比
+		float m_Fov;				// 视场角
+		float m_AspectRatio = 0;	// 宽高比
 
 		float m_Left = -10.0f;
 		float m_Right = 10.0f;
