@@ -30,11 +30,23 @@ float calculateShadow(vec4 lightSpacePos, vec3 norm, vec3 lightDir)
 	if(proj.x < 0.0 || proj.x > 1.0 || proj.y < 0.0 || proj.y > 1.0 || proj.z < 0.0 || proj.z > 1.0)
 		return 0.0;
 
-	float closestDepth = texture(uShadowMap, proj.xy).r;
-	float currentDepth = proj.z;
+	float bias = max(0.0025 * (1.0 - dot(norm, lightDir)), 0.0001);
+	float currentDepth = proj.z - bias;
 
-	float bias = max(0.001 * (1.0 - dot(norm, lightDir)), 0.0001);
-	float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+	vec2 texelSize = 1.0 / vec2(textureSize(uShadowMap, 0));
+	float shadow = 0.0;
+	int radius = 3;
+
+	for(int x = -radius; x <= radius; ++x)
+	{
+		for(int y = -radius; y <= radius; ++y)
+		{
+			float closestDepth = texture(uShadowMap, proj.xy + vec2(x, y) * texelSize).r;
+			shadow += currentDepth > closestDepth ? 1.0 : 0.0;
+		}
+	}
+	float samples = (radius * 2 + 1) * (radius * 2 + 1);
+	shadow /= samples;
 	
 	return shadow;
 }
@@ -43,7 +55,7 @@ void main()
 {
 	vec3 baseColor = uBaseColor;
 	if (uHasDiffuseMap)
-		baseColor *= texture(uDiffuseMap, v_TexCoord).rbg;
+		baseColor *= texture(uDiffuseMap, v_TexCoord).rgb;
 	vec3 norm = normalize(v_Normal);
 	vec3 viewDir = normalize(uViewPos - v_FragPos);
 

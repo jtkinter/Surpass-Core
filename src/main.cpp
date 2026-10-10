@@ -13,8 +13,8 @@ int main()
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 	scene.setCamera(camera);
 
-	//ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
-	Primitive::MeshData meshData = Primitive::sphere();
+	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
+	//Primitive::MeshData meshData = Primitive::sphere();
 	Mesh mesh(meshData.vertices, meshData.indices);
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
@@ -40,7 +40,7 @@ int main()
 	lights.push_back(fillLight);
 
 	Light rimLight;
-	rimLight.pos = glm::vec3(0.0f, -3.0f, -5.0f);
+	rimLight.pos = glm::vec3(0.0f, 0.5f, -5.0f);
 	rimLight.color = glm::vec3(0.3f, 0.4f, 0.5f);
 	rimLight.intensity = 0.6f;
 	lights.push_back(rimLight);
@@ -49,20 +49,21 @@ int main()
 
 	const int count = 3;
 	const float spacing = 1.5f;
-	float offset = (count - 1) * spacing;
 	std::vector<Model> models;
 	models.reserve(count);
 	for (int i = 0; i < count; ++i)
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(offset + i * spacing, 0.0f, 0.0f));
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3((i-1) * spacing, 1.5f, 0.0f));
 		Model model(mesh, material, transform);
 		models.push_back(model);
 	}
 	scene.addModels(models);
 
-	Log::info("Window: ", window.getWidth(), " x ", window.getHeight(),
-          " aspect=", window.getAspectRatio());
-	Log::info("Camera aspect: ", scene.getCamera().getAspectRatio());
+	Primitive::MeshData planeData = Primitive::plane(10.0f, 10.0f);
+	Mesh planeMesh(planeData.vertices, planeData.indices);
+	Material baseMat;
+	Model plane(planeMesh, baseMat, glm::mat4({1.0f}));
+	scene.addModel(plane);
 
 	Renderer::init();
 
@@ -72,8 +73,6 @@ int main()
 
 	int fbW, fbH;
 	glfwGetFramebufferSize(glfwGetCurrentContext(), &fbW, &fbH);
-	Log::info("Window size: ", window.getWidth(), "x", window.getHeight());
-	Log::info("Framebuffer size: ", fbW, "x", fbH);
 
 	// ¼ì²éÖØÖÃ
 	EventDispatcher::get().subscribe(EventType::WindowResizeEvent, [&](const Event& e)

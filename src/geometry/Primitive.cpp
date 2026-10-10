@@ -78,4 +78,36 @@ namespace Surpass {
 
 		return data;
 	}
+
+	Primitive::MeshData Primitive::plane(float width, float depth)
+	{
+		MeshData data;
+		float w = width * 0.5f;
+		float d = depth * 0.5f;
+
+		Vertex v0, v1, v2, v3;
+		v0.position = { -w, 0,-d };
+		v0.normals = { 0, 1, 0 };
+		v0.texCoord = { 0,0 };
+
+		v1.position = { -w, 0, d };
+		v1.normals = { 0, 1, 0 };
+		v1.texCoord = { 0,1 };
+
+		v2.position = { w, 0, d };
+		v2.normals = { 0, 1, 0 };
+		v2.texCoord = { 1,1 };
+
+		v3.position = { w, 0, -d };
+		v3.normals = { 0, 1, 0 };
+		v3.texCoord = { 1,0 };
+
+		data.vertices = { v0, v1, v2, v3 };
+		data.indices = {
+			0, 1, 2,
+			0, 2, 3
+		};
+
+		return data;
+	}
 }
