@@ -46,6 +46,8 @@ int main()
 	lights.push_back(rimLight);
 
 	scene.addLights(lights);
+	//scene.setLightCast(1, false);
+	scene.setLightCast(2, false);
 
 	const int count = 3;
 	const float spacing = 1.5f;

@@ -1,5 +1,6 @@
 #include "sppch.h"
 #include "Scene.h"
+#include "core/Config.h"
 
 namespace Surpass {
 
@@ -40,4 +41,22 @@ namespace Surpass {
 		m_LightVersion++;
 	}
 
+	void Scene::setAllLightsCastShadow(bool cast)
+	{
+		for (Light light : m_Lights) light.castShadow = cast;
+		m_LightVersion++;
+	}
+
+	void Scene::setShadowLightLimit(int count)
+	{
+		for (size_t i = 0; i < m_Lights.size(); ++i)
+			m_Lights[i].castShadow = (i < count);
+		m_LightVersion++;
+	}
+
+	void Scene::setLightCast(int index, bool cast)
+	{
+		m_Lights[index].castShadow = cast;
+		m_LightVersion++;
+	}
 }

@@ -30,22 +30,37 @@ namespace Surpass {
 		m_Shader.setUniformMat4("uView", camera.getViewMatrix());
 		m_Shader.setUniformMat4("uProjection", camera.getProjectionMatrix());
 
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);
-		m_Shader.setUniform1i("uShadowMap", 1);
-		m_Shader.setUniformMat4("uLightSpaceMatrix", scene.getLightSpaceMatrix());
+		const auto& matrices = scene.getLightSpaceMatrices();
+		int count = (int)std::min({ m_DepthAttachments.size(), matrices.size(), (size_t)MAX_LIGHTS });
+		for (int i = 0; i < count; ++i)
+		{
+			std::string idx = "[" + std::to_string(i) + "]";
 
+			glActiveTexture(GL_TEXTURE1 + i);
+			glBindTexture(GL_TEXTURE_2D, m_DepthAttachments[i]);
+			m_Shader.setUniform1i("uShadowMap" + idx, 1 + i);
+			m_Shader.setUniformMat4("uLightSpaceMatrices" + idx, matrices[i]);
+		}
+		//m_Shader.setUniform1i("uShadowLightCount", count);
+
+		const auto& lightToShadow = scene.getLightToShadowMap();
 		const std::vector<Light>& lights = scene.getLights();
 		for (int i = 0; i < lights.size(); ++i)
+		{
+			std::string name = "uLightToShadow[" + std::to_string(i) + "]";
+			int idx = (i < lightToShadow.size()) ? lightToShadow[i] : -1;
+			m_Shader.setUniform1i(name, idx);
 			lights[i].apply(m_Shader, i);
+		}
+			
+		m_Shader.setUniform1i("uLightCount", (int)lights.size());
 
 		for (auto& m : scene.getModels())
 		{
 			m.getMaterial().apply(m_Shader);
 			m.draw(m_Shader);
 		}
-		m_Shader.setUniform1i("uLightCount", (int)lights.size());
-
+		
 		Renderer::endPass();
 	}
 

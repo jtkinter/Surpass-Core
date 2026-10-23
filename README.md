@@ -25,7 +25,7 @@
 
 
 ### 3D效果图
-![3D效果图](res/pictures/test2.png)
+![3D效果图](res/pictures/mul_light_shadow.png)
 
 ### 项目结构
 ```
@@ -59,7 +59,7 @@ cup(lp).obj
 
 ### 下一步
 - 进一步使用premake管理项目
-- 修改光影细节：多光源阴影、法线贴图
+- 修改光影细节：法线贴图
 - 进一步优化材质系统
 
 ## 里程碑

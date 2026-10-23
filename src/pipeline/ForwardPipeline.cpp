@@ -30,7 +30,7 @@ namespace Surpass {
 	void ForwardPipeline::render(Scene& scene)
 	{
 		m_ShadowPass->execute(scene);
-		m_MainPass->setDepthInput(m_ShadowPass->getDepthOutput());
+		m_MainPass->setDepthInputs(m_ShadowPass->getDepthOutputs());
 		m_MainPass->execute(scene);
 		m_PostPass->setColorInput(m_MainPass->getColorOutput());
 		m_PostPass->execute(scene);

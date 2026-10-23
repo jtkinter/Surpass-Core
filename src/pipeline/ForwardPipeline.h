@@ -17,6 +17,9 @@ namespace Surpass {
 
 		void setMainPass(std::unique_ptr<RenderPass> mainPass);
 
+		void setShadowEnabled(bool enabled) { m_ShadowEnabled = enabled; }
+		bool isShadowEnabled() const { return m_ShadowEnabled; }
+
 	private:
 		std::unique_ptr<RenderPass> m_ShadowPass;
 		std::unique_ptr<RenderPass> m_MainPass;
@@ -24,6 +27,7 @@ namespace Surpass {
 	
 		int m_Width = 0;
 		int m_Height = 0;
+		bool m_ShadowEnabled = true;
 	};
 
 }
