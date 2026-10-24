@@ -3,11 +3,13 @@
 layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTexCoord;
+layout(location = 3) in vec4 aTangent;
 
 const int MAX_LIGHTS = 8;
 
 out vec2 v_TexCoord;
 out vec3 v_Normal;
+out vec4 v_Tangent;
 out vec3 v_FragPos;
 out vec4 v_LightSpacePos[MAX_LIGHTS];
 
@@ -20,7 +22,10 @@ void main()
 {
 	vec4 worldPos = uModel * vec4(aPos, 1.0);
 	v_FragPos = worldPos.xyz;
-	v_Normal = mat3(uModel) * aNormal;
+
+	mat3 normalMatrix = mat3(uModel);
+	v_Normal = normalize(normalMatrix * aNormal);
+	v_Tangent = vec4(normalize(normalMatrix * aTangent.xyz), aTangent.w);
 	v_TexCoord = aTexCoord;
 	for(int i = 0; i < MAX_LIGHTS; ++i)
 		v_LightSpacePos[i] = uLightSpaceMatrices[i] * worldPos;

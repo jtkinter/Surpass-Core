@@ -4,6 +4,7 @@ const int MAX_LIGHTS = 8;
 
 in vec2 v_TexCoord;
 in vec3 v_Normal;
+in vec4 v_Tangent;
 in vec3 v_FragPos;
 in vec4 v_LightSpacePos[MAX_LIGHTS];
 
@@ -14,9 +15,10 @@ uniform vec3 uBaseColor;
 uniform sampler2D uDiffuseMap;
 uniform bool uHasDiffuseMap;
 uniform float uShininess;
+uniform sampler2D uNormalMap;
+uniform bool uHasNormalMap;
 
 // 光照相机参数（投影）
-
 uniform vec3 uViewPos;			// 相机位置
 uniform sampler2D uShadowMap[MAX_LIGHTS];	// 深度图
 uniform int uLightToShadow[MAX_LIGHTS];
@@ -60,7 +62,18 @@ void main()
 	vec3 baseColor = uBaseColor;
 	if (uHasDiffuseMap)
 		baseColor *= texture(uDiffuseMap, v_TexCoord).rgb;
+
 	vec3 norm = normalize(v_Normal);
+	if(uHasNormalMap)
+	{
+		vec3 tangentNormal = texture(uNormalMap, v_TexCoord).rgb * 2.0 - 1.0;
+		vec3 T = normalize(v_Tangent.xyz);
+		vec3 B = cross(norm, T) * v_Tangent.w;
+		mat3 TBN = mat3(T, B, norm);
+
+		norm = normalize(TBN * tangentNormal);
+	}
+
 	vec3 viewDir = normalize(uViewPos - v_FragPos);
 
 	vec3 result = vec3(0.0f);

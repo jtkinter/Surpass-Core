@@ -31,7 +31,7 @@ namespace Surpass {
 		m_Shader.setUniformMat4("uProjection", camera.getProjectionMatrix());
 
 		const auto& matrices = scene.getLightSpaceMatrices();
-		int count = (int)std::min({ m_DepthAttachments.size(), matrices.size(), (size_t)MAX_LIGHTS });
+		int count = (int)std::min(matrices.size(), (size_t)MAX_LIGHTS);
 		for (int i = 0; i < count; ++i)
 		{
 			std::string idx = "[" + std::to_string(i) + "]";

@@ -11,7 +11,6 @@
 #include "renderer/Vertex.h"
 #include "renderer/Mesh.h"
 #include "renderer/Renderer.h"
-#include "renderer/ObjLoader.h"
 #include "renderer/Framebuffer.h"
 #include "renderer/FullScreenQuad.h"
 
@@ -22,6 +21,7 @@
 #include "world/Scene.h"
 #include "world/SceneManager.h"
 #include "world/Material.h"
+#include "world/MeshData.h"
 
 // pass管线
 #include "pipeline/ShadowPass.h"
@@ -32,4 +32,6 @@
 // 通用工具
 #include "utils/TextureGenerator.h"
 #include "utils/Path.h"
+
 #include "geometry/Primitive.h"
+#include "geometry/ObjLoader.h"

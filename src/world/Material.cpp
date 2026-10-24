@@ -1,5 +1,6 @@
 #include "sppch.h"
 #include "Material.h"
+#include "core/Config.h"
 
 namespace Surpass {
 
@@ -10,11 +11,20 @@ namespace Surpass {
 
 		if (diffuseMap)
 		{
-			diffuseMap->bind(0);
+			diffuseMap->bind(DIFFUSE_IDX);
 			shader.setUniform1i("uDiffuseMap", 0);
 			shader.setUniform1i("uHasDiffuseMap", 1);
 		}
 		else
 			shader.setUniform1i("uHasDiffuseMap", 0);
+
+		if (normalMap)
+		{
+			normalMap->bind(NORMAL_IDX);
+			shader.setUniform1i("uNormalMap", NORMAL_IDX);
+			shader.setUniform1i("uHasNormalMap", 1);
+		}
+		else
+			shader.setUniform1i("uHasNormalMap", 0);
 	}
 }

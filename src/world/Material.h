@@ -10,6 +10,7 @@ namespace Surpass {
 		glm::vec3 baseColor{ 1.0f,1.0f,1.0f };
 		float shininess = 32.0f;
 		const Texture* diffuseMap = nullptr;
+		const Texture* normalMap = nullptr;
 
 		void apply(const Shader& shader) const;
 	};

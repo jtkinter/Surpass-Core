@@ -13,17 +13,23 @@ int main()
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 	scene.setCamera(camera);
 
-	ObjLoader::MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
-	//Primitive::MeshData meshData = Primitive::sphere();
+	MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
+	meshData.computeTangents();
+	//MeshData meshData = Primitive::sphere();
+	//meshData.computeTangents();
 	Mesh mesh(meshData.vertices, meshData.indices);
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	Texture texture(512, 512, data.data());
 
+	std::vector<unsigned char> normalMap = generatorNormalMap(512, 512, 8);
+	Texture normalTexture(512, 512, normalMap.data());
+
 	Material material;
 	material.baseColor = glm::vec3(1.0f);
 	material.shininess = 32.0f;
 	material.diffuseMap = &texture;
+	//material.normalMap = &normalTexture;
 
 	std::vector<Light> lights;
 	
@@ -61,10 +67,12 @@ int main()
 	}
 	scene.addModels(models);
 
-	Primitive::MeshData planeData = Primitive::plane(10.0f, 10.0f);
+	MeshData planeData = Primitive::plane(10.0f, 10.0f);
+	planeData.computeTangents();
 	Mesh planeMesh(planeData.vertices, planeData.indices);
 	Material baseMat;
-	Model plane(planeMesh, baseMat, glm::mat4({1.0f}));
+	baseMat.normalMap = &normalTexture;
+	Model plane(planeMesh, baseMat, glm::mat4(1.0f));
 	scene.addModel(plane);
 
 	Renderer::init();

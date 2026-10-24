@@ -28,7 +28,7 @@ namespace Surpass {
 		}
 	};
 
-	ObjLoader::MeshData ObjLoader::load(const std::string& filepath)
+	MeshData ObjLoader::load(const std::string& filepath)
 	{
 		MeshData result;
 

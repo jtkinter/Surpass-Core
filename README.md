@@ -45,6 +45,7 @@ cup(lp).obj
 ---> textures   // 纹理文件
 -> src          // 源代码
 ---> core
+---> geometry
 ---> pipeline
 ---> renderer
 ---> world      // 维护数据
@@ -59,8 +60,8 @@ cup(lp).obj
 
 ### 下一步
 - 进一步使用premake管理项目
-- 修改光影细节：法线贴图
-- 进一步优化材质系统
+- 进一步优化光影、材质系统
+- 优化API调用
 
 ## 里程碑
 - v0.1 - 实现Utils、Shader、Mesh和Window封装、引入premake项目管理和预编译头

@@ -3,7 +3,7 @@
 
 namespace Surpass {
 
-	Primitive::MeshData Primitive::cube(float size)
+	MeshData Primitive::cube(float size)
 	{
 		MeshData data;
 		float h = size * 0.5;
@@ -37,7 +37,7 @@ namespace Surpass {
 		return data;
 	}
 
-	Primitive::MeshData Primitive::sphere(float radius, int segments, int rings)
+	MeshData Primitive::sphere(float radius, int segments, int rings)
 	{
 		MeshData data;
 		for (int ring = 0; ring <= rings; ++ring)
@@ -79,7 +79,7 @@ namespace Surpass {
 		return data;
 	}
 
-	Primitive::MeshData Primitive::plane(float width, float depth)
+	MeshData Primitive::plane(float width, float depth)
 	{
 		MeshData data;
 		float w = width * 0.5f;

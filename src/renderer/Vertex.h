@@ -10,6 +10,7 @@ namespace Surpass {
 		glm::vec3 position;	// 位置坐标
 		glm::vec3 normals;	// 法线
 		glm::vec2 texCoord;	// 纹理坐标
+		glm::vec4 tangent;	// 切线
 
 		static void setAttributePointers()
 		{
@@ -24,6 +25,10 @@ namespace Surpass {
 			// 设置纹理格式
 			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
 			glEnableVertexAttribArray(2);
+
+			// 设置切线
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+			glEnableVertexAttribArray(3);
 		}
 	};
 
