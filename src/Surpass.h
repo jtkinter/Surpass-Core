@@ -35,3 +35,5 @@
 
 #include "geometry/Primitive.h"
 #include "geometry/ObjLoader.h"
+
+#include "resource/ResourceManager.h"

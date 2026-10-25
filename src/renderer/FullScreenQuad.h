@@ -13,7 +13,7 @@ namespace Surpass {
 		FullScreenQuad(const FullScreenQuad&) = delete;
 		FullScreenQuad& operator=(const FullScreenQuad&) = delete;
 		FullScreenQuad(FullScreenQuad&&) = delete;
-		FullScreenQuad& operator=(const FullScreenQuad&&) = delete;
+		FullScreenQuad& operator=(FullScreenQuad&&) = delete;
 
 		void draw();
 	private:

@@ -7,14 +7,15 @@
 
 namespace Surpass {
 
-	Model::Model(const Mesh& mesh, const Material& material, const glm::mat4& transform)
+	Model::Model(const Mesh* mesh, const Material* material, const glm::mat4& transform)
 		: m_Mesh(mesh), m_Material(material), m_Transform(transform)
 	{
 	}
 
 	void Model::draw(const Shader& shader) const
 	{
-		Renderer::draw(shader, m_Mesh.get(), m_Transform);
+		if (inValid()) return;
+		Renderer::draw(shader, *m_Mesh, m_Transform);
 	}
 
 }

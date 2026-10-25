@@ -48,6 +48,7 @@ cup(lp).obj
 ---> geometry
 ---> pipeline
 ---> renderer
+---> resource
 ---> world      // 维护数据
 ---> utils
 -> tools        // 环境构建文件

@@ -16,9 +16,10 @@ namespace Surpass {
 		Mesh(const Mesh&) = delete;
 		Mesh& operator=(const Mesh&) = delete;
 		Mesh(Mesh&&) = delete;
-		Mesh& operator=(const Mesh&&) = delete;
+		Mesh& operator=(Mesh&&) = delete;
 
 		void draw() const;
+		bool inValid();
 
 	private:
 		unsigned int m_Attribute = 0, m_Buffer = 0, m_Element = 0;

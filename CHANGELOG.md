@@ -108,3 +108,6 @@
 
 2026.10.24
 实现法线贴图
+
+2026.10.25
+实现ResourceManager类，保存Mesh、Texture、Material

@@ -16,7 +16,7 @@ namespace Surpass {
 		Shader(const Shader&) = delete;
 		Shader& operator=(const Shader&) = delete;
 		Shader(Shader&&) = delete;
-		Shader& operator=(const Shader&&) = delete;
+		Shader& operator=(Shader&&) = delete;
 
 		void use() const;
 		void setUniform1f(const std::string& name, float value) const;

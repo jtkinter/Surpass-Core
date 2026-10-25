@@ -48,4 +48,9 @@ namespace Surpass {
 		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, 0);
 	}
 
+	bool Mesh::inValid()
+	{
+		return !(m_Attribute || m_Buffer || m_Element);
+	}
+
 }

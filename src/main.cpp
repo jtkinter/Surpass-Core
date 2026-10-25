@@ -3,36 +3,30 @@
 
 using namespace Surpass;
 
-int main()
+void buildDemoScene(Scene& scene, ResourceManager& rm, float aspectRatio)
 {
-	Window window(1920, 1080, "Surpass Engine");
-
-	Scene scene;
-
-	Camera camera(45.0f, window.getAspectRatio());
+	Camera camera(45.0f, aspectRatio);
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
 	scene.setCamera(camera);
 
-	MeshData meshData = ObjLoader::load("res/models/cup(lp).obj");
-	meshData.computeTangents();
-	//MeshData meshData = Primitive::sphere();
-	//meshData.computeTangents();
-	Mesh mesh(meshData.vertices, meshData.indices);
+	Mesh& mesh = rm.loadMesh("Cup", "res/models/cup(lp).obj", true);
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
-	Texture texture(512, 512, data.data());
+	rm.addTexture("CheckerBoard", 512, 512, data.data());
 
 	std::vector<unsigned char> normalMap = generatorNormalMap(512, 512, 8);
-	Texture normalTexture(512, 512, normalMap.data());
+	auto& normalTexture = rm.addTexture("NormalCross", 512, 512, normalMap.data());
 
 	Material material;
 	material.baseColor = glm::vec3(1.0f);
 	material.shininess = 32.0f;
-	material.diffuseMap = &texture;
+	material.diffuseMap = rm.findTexture("CheckerBoard");
 	//material.normalMap = &normalTexture;
 
+	auto& mat = rm.addMaterial("ChecherBoard", material);
+
 	std::vector<Light> lights;
-	
+
 	Light keyLight;
 	keyLight.pos = glm::vec3(5.0f, 5.0f, 5.0f);
 	keyLight.color = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -61,19 +55,31 @@ int main()
 	models.reserve(count);
 	for (int i = 0; i < count; ++i)
 	{
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3((i-1) * spacing, 1.5f, 0.0f));
-		Model model(mesh, material, transform);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3((i - 1) * spacing, 1.5f, 0.0f));
+		Model model(&mesh, &mat, transform);
 		models.push_back(model);
 	}
 	scene.addModels(models);
 
 	MeshData planeData = Primitive::plane(10.0f, 10.0f);
 	planeData.computeTangents();
-	Mesh planeMesh(planeData.vertices, planeData.indices);
+	rm.addMesh("Plane", planeData);
+
 	Material baseMat;
 	baseMat.normalMap = &normalTexture;
-	Model plane(planeMesh, baseMat, glm::mat4(1.0f));
+	rm.addMaterial("Base", baseMat);
+
+	Model plane(rm.findMesh("Plane"), rm.findMaterial("Base"), glm::mat4(1.0f));
 	scene.addModel(plane);
+}
+
+int main()
+{
+	Window window(1920, 1080, "Surpass Engine");
+
+	ResourceManager rm;
+	Scene scene;
+	buildDemoScene(scene, rm, window.getAspectRatio());
 
 	Renderer::init();
 
