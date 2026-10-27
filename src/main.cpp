@@ -10,6 +10,10 @@ void buildDemoScene(Scene& scene, ResourceManager& rm, float aspectRatio)
 	scene.setCamera(camera);
 
 	Mesh& mesh = rm.loadMesh("Cup", "res/models/cup(lp).obj", true);
+	Log::info(
+		"(", mesh.getBoundbox().min_point.x, ",", mesh.getBoundbox().min_point.y, ",", mesh.getBoundbox().min_point.z, "), ",
+		"(", mesh.getBoundbox().max_point.x, ",", mesh.getBoundbox().max_point.y, ",", mesh.getBoundbox().max_point.z, ")"
+		);
 
 	std::vector<unsigned char> data = generatorCheckerBoard(512, 512, 8);
 	rm.addTexture("CheckerBoard", 512, 512, data.data());

@@ -142,6 +142,7 @@ namespace Surpass {
 			}
 		}
 
+		result.computeBounds();
 		Log::info(filepath, "加载完毕 | 顶点数：", result.vertices.size(), " | 索引数：", result.indices.size());
 		return result;
 	}

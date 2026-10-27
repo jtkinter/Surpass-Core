@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "renderer/Vertex.h"
+#include "geometry/Boundbox.h"
 
 namespace Surpass {
 
@@ -9,7 +10,9 @@ namespace Surpass {
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
+		Boundbox bounds;
 
 		void computeTangents();
+		void computeBounds();
 	};
 }

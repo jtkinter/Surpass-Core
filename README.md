@@ -63,6 +63,7 @@ cup(lp).obj
 - 进一步使用premake管理项目
 - 进一步优化光影、材质系统
 - 优化API调用
+- ResourceManager类支持卸载、重载、替换
 
 ## 里程碑
 - v0.1 - 实现Utils、Shader、Mesh和Window封装、引入premake项目管理和预编译头

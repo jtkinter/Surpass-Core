@@ -33,7 +33,10 @@
 #include "utils/TextureGenerator.h"
 #include "utils/Path.h"
 
+// 几何体
 #include "geometry/Primitive.h"
 #include "geometry/ObjLoader.h"
+#include "geometry/Ray.h"
 
+// 资源
 #include "resource/ResourceManager.h"

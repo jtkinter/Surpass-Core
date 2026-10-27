@@ -2,10 +2,10 @@
 
 #include <functional>
 #include "Material.h"
+#include "renderer/Mesh.h"
 
 namespace Surpass {
 
-	class Mesh;
 	class Shader;
 
 	class Model
@@ -15,6 +15,11 @@ namespace Surpass {
 		void draw(const Shader& shader) const;
 
 		const Material& getMaterial() const { return *m_Material; }
+		const Boundbox& getBoundbox() const
+		{
+			if (!m_Mesh) return Boundbox();
+			return m_Mesh->getBoundbox().transformed(m_Transform);
+		}
 
 		bool inValid() const { return !(m_Mesh && m_Material); }
 

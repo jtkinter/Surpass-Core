@@ -37,7 +37,7 @@ namespace Surpass {
 		MeshData data = ObjLoader::load(actualPath);
 		if (computeTangents)
 			data.computeTangents();
-		auto mesh = std::make_unique<Mesh>(data.vertices, data.indices);
+		auto mesh = std::make_unique<Mesh>(data);
 		Mesh& ref = *mesh;
 		m_Meshes[name] = std::move(mesh);
 		return ref;
@@ -48,7 +48,7 @@ namespace Surpass {
 		if (Mesh* existing = findMesh(name))
 			return *existing;
 
-		auto mesh = std::make_unique<Mesh>(data.vertices, data.indices);
+		auto mesh = std::make_unique<Mesh>(data);
 		Mesh& ref = *mesh;
 		m_Meshes[name] = std::move(mesh);
 		return ref;

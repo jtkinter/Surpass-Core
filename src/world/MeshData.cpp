@@ -53,4 +53,17 @@ namespace Surpass {
 			vertices[i].tangent = glm::vec4(T, w);
 		}
 	}
+
+	void MeshData::computeBounds()
+	{
+		if (vertices.empty())
+		{
+			bounds = Boundbox();
+			return;
+		}
+
+		bounds.min_point = bounds.max_point = vertices[0].position;
+		for (const auto& v : vertices)
+			bounds.expand(v.position);
+	}
 }

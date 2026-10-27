@@ -33,6 +33,7 @@ namespace Surpass {
 		void resetScrollOffset() { m_ScrollOffset = 0.0f; }
 
 		glm::vec2 getMouseDelta() const { return m_MouseDelta; }
+		glm::vec2 getMousePos() const { return m_MousePos; }
 
 	private:
 		void onKeyEvent(const KeyEvent& e);

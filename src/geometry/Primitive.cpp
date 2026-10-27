@@ -34,6 +34,7 @@ namespace Surpass {
 			data.indices.insert(data.indices.end(), {b, b + 1, b + 2, b + 0, b + 2, b + 3});
 		}
 
+		data.computeBounds();
 		return data;
 	}
 
@@ -76,6 +77,7 @@ namespace Surpass {
 			}
 		}
 
+		data.computeBounds();
 		return data;
 	}
 
@@ -108,6 +110,7 @@ namespace Surpass {
 			0, 2, 3
 		};
 
+		data.computeBounds();
 		return data;
 	}
 }
