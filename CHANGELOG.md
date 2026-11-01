@@ -111,3 +111,9 @@
 
 2026.10.25
 实现ResourceManager类，保存Mesh、Texture、Material
+
+2026.10.26
+提供Ray类和包围体类，方便用户实现模型选中
+
+2026.11.1
+提供setTransform，可以改变物体位置

@@ -11,16 +11,17 @@ namespace Surpass {
 	class Scene
 	{
 	public:
-		void setCamera(const Surpass::Camera& camera) { m_Camera = camera; }
-		Surpass::Camera& getCamera() { return m_Camera; }
-		const Surpass::Camera& getCamera() const { return m_Camera; }
+		void setCamera(const Camera& camera) { m_Camera = camera; }
+		Camera& getCamera() { return m_Camera; }
+		const Camera& getCamera() const { return m_Camera; }
 
-		void addModel(const Surpass::Model& model) { m_Models.push_back(model); }
-		void addModels(const std::vector<Surpass::Model>& models);
-		const std::vector<Surpass::Model>& getModels() const { return m_Models; }
+		void addModel(const Model& model) { m_Models.push_back(model); }
+		void addModels(const std::vector<Model>& models);
+		const std::vector<Model>& getModels() const { return m_Models; }
+		Model& getModel(size_t idx) { return m_Models[idx]; }
 
-		void addLight(const Surpass::Light& light);
-		void addLights(const std::vector<Surpass::Light>& lights);
+		void addLight(const Light& light);
+		void addLights(const std::vector<Light>& lights);
 		void setAllLightsCastShadow(bool cast);
 		void setShadowLightLimit(int count);
 		void setLightCast(int index, bool cast);
@@ -42,8 +43,8 @@ namespace Surpass {
 
 	private:
 		Camera m_Camera;
-		std::vector<Surpass::Model> m_Models;
-		std::vector<Surpass::Light> m_Lights;
+		std::vector<Model> m_Models;
+		std::vector<Light> m_Lights;
 
 		std::vector<glm::mat4> m_LightSpaceMatrices;
 		glm::vec3 m_SceneCenter{ 0.0f };

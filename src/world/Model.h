@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <functional>
 #include "Material.h"
 #include "renderer/Mesh.h"
@@ -22,6 +24,11 @@ namespace Surpass {
 		}
 
 		bool inValid() const { return !(m_Mesh && m_Material); }
+
+		void setTransform(const glm::mat4& transform) { m_Transform = transform; }
+
+		void move(const glm::vec3 offset) { m_Transform = glm::translate(glm::mat4(1.0f), offset) * m_Transform; }
+		void rotate(float angle, const glm::vec3& axis) { m_Transform = glm::rotate(glm::mat4(1.0f), angle, axis) * m_Transform; }
 
 	private:
 		const Mesh* m_Mesh;
