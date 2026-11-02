@@ -13,6 +13,7 @@ namespace Surpass {
 		void execute(const Scene& scene) override;
 
 		void setColorInput(unsigned int input) override { m_ColorAttachment = input; }
+		void setMaskInput(unsigned int input) { m_MaskAttachment = input; }
 
 	private:
 		Shader m_Shader;
@@ -21,6 +22,7 @@ namespace Surpass {
 		int m_Height = 0;
 
 		unsigned int m_ColorAttachment = 0;
+		unsigned int m_MaskAttachment = 0;
 	};
 
 }

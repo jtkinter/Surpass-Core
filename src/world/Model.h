@@ -17,7 +17,7 @@ namespace Surpass {
 		void draw(const Shader& shader) const;
 
 		const Material& getMaterial() const { return *m_Material; }
-		const Boundbox& getBoundbox() const
+		Boundbox getBoundbox() const
 		{
 			if (!m_Mesh) return Boundbox();
 			return m_Mesh->getBoundbox().transformed(m_Transform);
@@ -26,6 +26,8 @@ namespace Surpass {
 		bool inValid() const { return !(m_Mesh && m_Material); }
 
 		void setTransform(const glm::mat4& transform) { m_Transform = transform; }
+		const glm::mat4& getTransform() const { return m_Transform; }
+		glm::vec3 getPosition() const { return glm::vec3(m_Transform[3]); }
 
 		void move(const glm::vec3 offset) { m_Transform = glm::translate(glm::mat4(1.0f), offset) * m_Transform; }
 		void rotate(float angle, const glm::vec3& axis) { m_Transform = glm::rotate(glm::mat4(1.0f), angle, axis) * m_Transform; }

@@ -1,10 +1,9 @@
 #pragma once
 #include "RenderPipeline.h"
-#include "world/SceneManager.h"
 #include "ShadowPass.h"
 #include "MainPass.h"
 #include "PostProcessPass.h"
-#include "renderer/Texture.h"
+#include "OutlineMaskPass.h"
 
 namespace Surpass {
 
@@ -23,6 +22,7 @@ namespace Surpass {
 	private:
 		std::unique_ptr<RenderPass> m_ShadowPass;
 		std::unique_ptr<RenderPass> m_MainPass;
+		std::unique_ptr<RenderPass> m_OutlinePass;
 		std::unique_ptr<RenderPass> m_PostPass;
 	
 		int m_Width = 0;

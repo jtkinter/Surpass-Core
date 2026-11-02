@@ -1,6 +1,8 @@
 #include "sppch.h"
 #include "ShadowPass.h"
+
 #include "renderer/Renderer.h"
+#include "world/Scene.h"
 
 namespace Surpass {
 

@@ -2,7 +2,6 @@
 #include "RenderPass.h"
 #include "renderer/Framebuffer.h"
 #include "renderer/Shader.h"
-#include "world/Scene.h"
 #include "world/Camera.h"
 #include "core/Config.h"
 

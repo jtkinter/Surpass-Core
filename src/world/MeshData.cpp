@@ -14,8 +14,8 @@ namespace Surpass {
 			auto i0 = indices[i], i1 = indices[i + 1], i2 = indices[i + 2];
 
 			Vertex& v0 = vertices[i0];
-			Vertex& v1 = vertices[indices[i1]];
-			Vertex& v2 = vertices[indices[i2]];
+			Vertex& v1 = vertices[i1];
+			Vertex& v2 = vertices[i2];
 			glm::vec3 e1 = v1.position - v0.position;
 			glm::vec3 e2 = v2.position - v1.position;
 			glm::vec2 d1 = v1.texCoord - v0.texCoord;

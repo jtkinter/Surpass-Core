@@ -60,6 +60,11 @@ namespace Surpass {
 		glUniform1f(getUniformLocation(name), value);
 	}
 
+	void Shader::setUniform2f(const std::string& name, float v0, float v1) const
+	{
+		glUniform2f(getUniformLocation(name), v0 ,v1);
+	}
+
 	void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2) const
 	{
 		glUniform3f(getUniformLocation(name), v0, v1, v2);

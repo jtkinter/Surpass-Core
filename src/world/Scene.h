@@ -19,6 +19,7 @@ namespace Surpass {
 		void addModels(const std::vector<Model>& models);
 		const std::vector<Model>& getModels() const { return m_Models; }
 		Model& getModel(size_t idx) { return m_Models[idx]; }
+		const Model& getModel(size_t idx) const { return m_Models[idx]; }
 
 		void addLight(const Light& light);
 		void addLights(const std::vector<Light>& lights);
@@ -40,6 +41,8 @@ namespace Surpass {
 		const std::vector<int>& getLightToShadowMap() const { return m_LightToShadowMap; }
 
 		uint32_t getLightVersion() const { return m_LightVersion; }
+		int getSelectIndex() const { return m_SelectedIndex; }
+		void selectModel(int index) { m_SelectedIndex = index; }
 
 	private:
 		Camera m_Camera;
@@ -52,6 +55,7 @@ namespace Surpass {
 		std::vector<int> m_LightToShadowMap;
 
 		uint32_t m_LightVersion = 0;
+		int m_SelectedIndex = -1;
 	};
 
 }

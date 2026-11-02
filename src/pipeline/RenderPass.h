@@ -21,5 +21,6 @@ namespace Surpass {
 		virtual void setColorInputs(const std::vector<unsigned int>& inputs) {};
 		virtual void setDepthInput(unsigned int input) {};
 		virtual void setDepthInputs(const std::vector<unsigned int>& inputs) {};
+		virtual void setMaskInput(unsigned int input) {};
 	};
 }
